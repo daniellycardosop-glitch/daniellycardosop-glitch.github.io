@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgroField Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --page:#f2ede4;--page2:#ebe5d8;--card:#faf7f2;--card2:#f0ebe0;--card3:#e8e1d2;
+  --t1:#ffffff;--t2:#e8e0d0;--t3:#c0b89a;
+  --bd:rgba(92,80,55,0.13);--bd2:rgba(92,80,55,0.24);
+  --leaf:#3a6b14;--leaf2:#5a9c2a;--leaf3:#c8e6a0;--leafbg:#eaf4d8;
+  --soil:#7a4f1e;--soil2:#a06830;--soilbg:#f5e8d8;--soilbd:#c8965a;
+  --sky:#1a5c8a;--sky2:#3a8cbf;--skybg:#dceef8;--skybd:#7abbdf;
+  --hrv:#c47a10;--hrvbg:#fdf0d8;--hrvbd:#e8a848;
+  --red:#a02020;--redbg:#fce8e8;--redbd:#e06060;
+  --r:12px;--r2:8px;
+  --fd:'Playfair Display',Georgia,serif;
+  --fb:'DM Sans',sans-serif;
+}
+[data-theme="dark"]{
+  --page:#1e1a12;--page2:#17140d;--card:#252018;--card2:#2e271c;--card3:#362e21;
+  --t1:#ffffff;--t2:#e0d8c8;--t3:#a09888;
+  --bd:rgba(200,180,130,0.10);--bd2:rgba(200,180,130,0.20);
+  --leaf:#78c03a;--leaf2:#9ed85e;--leafbg:#1a2e0c;
+  --soil:#d4935a;--soil2:#e8b07a;--soilbg:#2a1c0c;--soilbd:#7a4f1e;
+  --sky:#5aaad8;--sky2:#7ec8f0;--skybg:#0c1e2e;--skybd:#1a4a6e;
+  --hrv:#f0b84a;--hrvbg:#2a1e08;--hrvbd:#7a5010;
+  --red:#e07878;--redbg:#2a0e0e;--redbd:#6a2020;
+}
+html{transition:background .4s}
+body{font-family:var(--fb);background:var(--page);color:#ffffff;min-height:100vh;padding:0 0 40px;transition:background .4s,color .4s;position:relative;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(ellipse 80% 50% at 10% 0%,rgba(90,156,42,.07) 0%,transparent 60%),
+  radial-gradient(ellipse 60% 40% at 90% 100%,rgba(122,79,30,.08) 0%,transparent 60%),
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='60' height='60' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E")}
+[data-theme="dark"] body::before{background-image:radial-gradient(ellipse 70% 40% at 15% 0%,rgba(90,156,42,.06) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 85% 100%,rgba(200,148,80,.06) 0%,transparent 60%)}
+.stripe{height:5px;background:repeating-linear-gradient(90deg,var(--leaf) 0,var(--leaf) 18px,var(--hrv) 18px,var(--hrv) 26px,var(--leaf2) 26px,var(--leaf2) 44px,var(--soil2) 44px,var(--soil2) 50px,var(--leaf) 50px,var(--leaf) 60px);opacity:.7;position:relative;z-index:2}
+.portal{max-width:940px;margin:0 auto;padding:0 16px 32px;position:relative;z-index:1}
+
+/* HEADER */
+.hdr{background:var(--card);border:.5px solid var(--bd2);border-radius:var(--r);margin:16px 0 14px;overflow:hidden;position:relative}
+.hdr::after{content:'';position:absolute;right:-20px;top:-20px;width:180px;height:180px;background:radial-gradient(circle,rgba(90,156,42,.07) 0%,transparent 70%);pointer-events:none}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.4rem;flex-wrap:wrap;gap:10px;border-bottom:.5px solid var(--bd)}
+.hdr-bot{display:flex;align-items:center;background:var(--card2);flex-wrap:wrap}
+.hbf{display:flex;align-items:center;gap:9px;padding:10px 18px;border-right:.5px solid var(--bd);cursor:pointer;transition:background .15s;flex-shrink:0}
+.hbf:hover{background:var(--card3)}
+.hbf:last-child{border-right:none}
+.hbf-ico{font-size:16px;color:var(--leaf2)}
+.hbf-lbl{font-size:10px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
+.hbf-val{font-size:13px;color:#ffffff;font-weight:500;line-height:1.2}
+.hbf-val.ph{color:rgba(255,255,255,0.55);font-style:italic;font-weight:400}
+.logo-wrap{width:46px;height:46px;border-radius:var(--r2);background:linear-gradient(135deg,var(--leaf) 0%,var(--leaf2) 100%);display:flex;align-items:center;justify-content:center;color:#d8f0a8;font-size:24px;flex-shrink:0;box-shadow:0 2px 8px rgba(58,107,20,.25)}
+.logo-t h1{font-family:var(--fd);font-size:20px;font-weight:700;color:#ffffff;letter-spacing:-.3px}
+.logo-t p{font-size:11px;color:rgba(255,255,255,0.55);margin-top:1px}
+.hdr-left{display:flex;align-items:center;gap:14px}
+.hdr-act{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{font-size:11px;padding:5px 11px;border-radius:var(--r2);background:var(--leafbg);color:var(--leaf);border:.5px solid rgba(90,156,42,.3);font-weight:600;display:flex;align-items:center;gap:5px}
+.thm-btn{width:38px;height:38px;border-radius:var(--r2);border:.5px solid var(--bd2);background:var(--card2);color:#ffffff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:19px;transition:all .2s}
+.thm-btn:hover{background:var(--card3);color:#ffffff}
+[data-theme="dark"] .thm-btn{color:#f0c84a;border-color:rgba(240,200,74,.25);background:rgba(240,200,74,.07)}
+.hdr-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:var(--r2);border:.5px solid var(--bd2);background:var(--card2);color:#ffffff;font-size:12px;cursor:pointer;transition:all .15s;font-family:var(--fb);font-weight:500}
+.hdr-btn:hover{background:var(--card3);color:#ffffff}
+
+/* SAFRA */
+.safra-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.sp{padding:6px 16px;border-radius:99px;font-size:12px;font-weight:600;border:1.5px solid;cursor:pointer;transition:all .2s;font-family:var(--fb);display:flex;align-items:center;gap:6px}
+.sp .dot{width:7px;height:7px;border-radius:99px;background:currentColor}
+.s-soja{background:var(--leafbg);color:var(--leaf);border-color:var(--leaf2)}
+.s-milho{background:var(--hrvbg);color:var(--hrv);border-color:var(--hrvbd)}
+.sp.off{opacity:.35;filter:grayscale(.5)}
+
+/* NAV */
+.nav{display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap;background:var(--card);border:.5px solid var(--bd);border-radius:var(--r);padding:6px}
+.nb{flex:1;min-width:70px;padding:9px 5px;border:none;border-radius:var(--r2);background:transparent;color:rgba(255,255,255,0.55);font-size:11px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .18s;font-family:var(--fb);font-weight:500}
+.nb i{font-size:19px}
+.nb.on{background:var(--leaf);color:#d8f5a8;box-shadow:0 2px 10px rgba(58,107,20,.22)}
+.nb:hover:not(.on){background:var(--card2);color:#ffffff}
+
+/* SEÇÕES */
+.sec{display:none;animation:fi .2s ease}
+.sec.on{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.card{background:var(--card);border:.5px solid var(--bd);border-radius:var(--r);padding:1.1rem 1.3rem;margin-bottom:14px;transition:background .3s}
+.card.al{border-left:3px solid var(--leaf2)}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px}
+.ct{font-size:14px;font-weight:600;color:#ffffff;display:flex;align-items:center;gap:8px;font-family:var(--fb)}
+.ct i{font-size:17px;color:var(--leaf2)}
+
+/* MÉTRICAS EDITÁVEIS */
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:14px}
+.mc{background:var(--card);border:.5px solid var(--bd);border-radius:var(--r2);padding:14px 12px;transition:background .3s;position:relative;overflow:hidden;cursor:pointer}
+.mc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--leaf2);opacity:.5}
+.mc.warn::before{background:var(--hrv)}
+.mc:hover{background:var(--card2)}
+.mc:hover .mc-edit{opacity:1}
+.mc-lbl{font-size:10px;color:rgba(255,255,255,0.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.mc-val{font-size:22px;font-weight:600;color:#ffffff;font-family:var(--fd);line-height:1.1}
+.mc-unit{font-size:11px;color:rgba(255,255,255,0.55);font-weight:400;font-family:var(--fb)}
+.mc-edit{position:absolute;top:6px;right:7px;font-size:13px;color:rgba(255,255,255,0.55);opacity:0;transition:opacity .15s}
+.mv-green{color:var(--leaf)}
+.mv-amber{color:var(--hrv)}
+
+/* FORMS */
+.fr{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin-bottom:10px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg label{font-size:10px;font-weight:600;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:.6px}
+.fg input,.fg select,.fg textarea{font-size:13px;padding:9px 11px;border:1px solid var(--bd2);border-radius:var(--r2);background:var(--card2);color:#ffffff;width:100%;font-family:var(--fb);transition:all .15s}
+.fg input::placeholder{color:rgba(255,255,255,0.45)}
+.fg textarea{resize:vertical;min-height:75px;line-height:1.5}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--leaf2);background:var(--card);box-shadow:0 0 0 3px rgba(90,156,42,.10)}
+.fg input[readonly]{background:var(--card3);cursor:default;color:rgba(255,255,255,0.7)}
+.fg select option{background:var(--card);color:#1c1a14}
+
+.rg{display:flex;gap:14px;flex-wrap:wrap;margin-top:4px}
+.ro{display:flex;align-items:center;gap:7px;cursor:pointer;font-size:13px;color:#ffffff}
+.ro input{width:auto;accent-color:var(--leaf)}
+
+.tg{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+.tg-i{font-size:11px;padding:4px 10px;border-radius:99px;cursor:pointer;border:1px solid;transition:all .15s;user-select:none;font-weight:500}
+.tg-i:hover{opacity:.75}
+.tg-soil{background:var(--soilbg);color:var(--soil);border-color:var(--soilbd)}
+.tg-sky{background:var(--skybg);color:var(--sky);border-color:var(--skybd)}
+.tg-i.off{opacity:.3;text-decoration:line-through}
+
+/* BOTÕES */
+.btn{padding:9px 16px;border-radius:var(--r2);font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:7px;border:none;transition:all .18s;font-family:var(--fb)}
+.btn-p{background:linear-gradient(135deg,var(--leaf) 0%,var(--leaf2) 100%);color:#d8f5a8;box-shadow:0 2px 10px rgba(58,107,20,.20)}
+.btn-p:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn-s{background:var(--card2);color:#ffffff;border:1px solid var(--bd2)}
+.btn-s:hover{background:var(--card3);color:#ffffff}
+.btn-e{background:var(--skybg);color:var(--sky);border:1px solid var(--skybd);padding:6px 12px;font-size:12px}
+.btn-d{background:var(--redbg);color:var(--red);border:1px solid var(--redbd);padding:6px 12px;font-size:12px}
+
+/* TABELA DE REGISTROS */
+.tbl-wrap{overflow-x:auto;margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,0.6);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--bd2);text-align:left;white-space:nowrap;background:var(--card2)}
+tbody tr{border-bottom:.5px solid var(--bd);transition:background .12s}
+tbody tr:hover{background:var(--card2)}
+tbody td{padding:9px 10px;color:#ffffff;vertical-align:middle}
+td.muted{color:rgba(255,255,255,0.65);font-size:12px}
+.pill{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+.pill-herb{background:var(--soilbg);color:var(--soil)}
+.pill-fung{background:var(--skybg);color:var(--sky)}
+.pill-inset{background:var(--redbg);color:var(--red)}
+.pill-fert{background:var(--leafbg);color:var(--leaf)}
+.pill-reg{background:#f0edf8;color:#7060c0}
+.pill-inoc{background:#e0f4ec;color:#1a7a4a}
+.pill-soja{background:var(--leafbg);color:var(--leaf)}
+.pill-milho{background:var(--hrvbg);color:var(--hrv)}
+.pill-alto{background:var(--redbg);color:var(--red)}
+.pill-medio{background:var(--hrvbg);color:var(--hrv)}
+.pill-baixo{background:var(--leafbg);color:var(--leaf)}
+.acts{display:flex;gap:6px}
+
+/* ABAS */
+.tabs{display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--bd);overflow-x:auto}
+.tab{padding:9px 16px;font-size:13px;cursor:pointer;color:rgba(255,255,255,0.55);border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all .15s;font-weight:500}
+.tab.on{color:var(--leaf);border-bottom-color:var(--leaf);font-weight:600}
+.tab:hover:not(.on){color:#ffffff}
+.sub{display:none;animation:fi .2s ease}
+.sub.on{display:block}
+
+/* UMIDADE */
+.ub{height:11px;background:var(--card3);border-radius:99px;overflow:hidden;margin:7px 0}
+.uf{height:100%;border-radius:99px;transition:width .4s,background .4s}
+
+/* GRÁFICO */
+.chart-w{display:flex;align-items:flex-end;gap:7px;height:140px;margin-bottom:8px}
+.chart-c{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px}
+.chart-b{width:100%;border-radius:4px 4px 0 0;min-height:8px;background:linear-gradient(180deg,var(--leaf2) 0%,var(--leaf) 100%)}
+.chart-c:hover .chart-b{filter:brightness(1.12)}
+.cv{font-size:10px;color:rgba(255,255,255,0.65);font-weight:600}
+.cl{font-size:10px;color:rgba(255,255,255,0.65);text-align:center;flex:1}
+
+/* CULTIVAR */
+.cvbx{padding:14px;border-radius:var(--r2);border:1px dashed var(--bd2);background:var(--card2);margin-top:12px}
+.exrow{display:flex;align-items:center;justify-content:space-between}
+.exlbl{font-size:13px;color:#ffffff;display:flex;align-items:center;gap:9px;font-weight:500}
+.tgl{position:relative;width:42px;height:23px;flex-shrink:0}
+.tgl input{opacity:0;width:0;height:0}
+.tgl-tr{position:absolute;top:0;left:0;right:0;bottom:0;background:var(--card3);border:1px solid var(--bd2);border-radius:99px;cursor:pointer;transition:.22s}
+.tgl-tr:before{content:'';position:absolute;width:17px;height:17px;left:2px;top:2px;background:var(--t3);border-radius:50%;transition:.22s}
+.tgl input:checked+.tgl-tr{background:var(--leaf);border-color:var(--leaf)}
+.tgl input:checked+.tgl-tr:before{transform:translateX(19px);background:white}
+.exrv{margin-top:14px;display:none}
+.exrv.on{display:block}
+.exp-badge{display:inline-flex;align-items:center;gap:6px;background:var(--hrvbg);color:var(--hrv);border:1px solid var(--hrvbd);padding:5px 12px;border-radius:var(--r2);font-size:12px;margin-bottom:10px;font-weight:600}
+
+/* MODAL */
+.ov{display:none;position:fixed;inset:0;background:rgba(14,12,8,.65);backdrop-filter:blur(3px);z-index:1000;align-items:center;justify-content:center;padding:16px}
+.ov.on{display:flex}
+.mod{background:var(--card);border:.5px solid var(--bd2);border-radius:var(--r);padding:1.6rem;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.mod-title{font-family:var(--fd);font-size:20px;font-weight:700;color:#ffffff;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.mod-title i{color:var(--leaf2);font-size:22px}
+.mod-sub{font-size:12px;color:rgba(255,255,255,0.55);margin-bottom:1.4rem}
+.mod-acts{display:flex;justify-content:flex-end;gap:8px;margin-top:1.4rem}
+
+/* DIVIDER */
+.div{height:1px;background:var(--bd);margin:14px 0}
+
+/* TOAST */
+.toast{display:none;position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,var(--leaf) 0%,var(--leaf2) 100%);color:#d0f0a0;padding:12px 20px;border-radius:var(--r2);font-size:13px;font-weight:600;align-items:center;gap:9px;z-index:9999;box-shadow:0 6px 24px rgba(58,107,20,.3);animation:su .25s ease}
+.toast.on{display:flex}
+@keyframes su{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:2.5rem 1rem;color:rgba(255,255,255,0.5)}
+.empty i{font-size:36px;display:block;margin-bottom:10px;opacity:.35}
+.empty p{font-size:13px}
+
+.fico{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:var(--r2);background:var(--leafbg);color:var(--leaf2);font-size:18px;flex-shrink:0}
+.fico.soil{background:var(--soilbg);color:var(--soil2)}
+.fico.sky{background:var(--skybg);color:var(--sky2)}
+.fico.hrv{background:var(--hrvbg);color:var(--hrv)}
+
+@media(max-width:560px){body{font-size:14px}.fr{grid-template-columns:1fr}.hdr-bot{overflow-x:auto;flex-wrap:nowrap}.logo-t h1{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="stripe"></div>
+<div class="portal">
+
+<!-- ══ HEADER ══ -->
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="hdr-left">
+      <div class="logo-wrap"><i class="ti ti-plant-2"></i></div>
+      <div class="logo-t"><h1>AgroField Pro</h1><p>Gestão Agronômica de Precisão</p></div>
+    </div>
+    <div class="hdr-act">
+      <span class="badge" id="badge-agro"><i class="ti ti-microscope" style="font-size:13px"></i>Eng. Agrônomo</span>
+      <button class="thm-btn" onclick="toggleTheme()"><i class="ti ti-moon" id="thm-ico"></i></button>
+      <button class="hdr-btn" onclick="openMod('mod-fazenda')"><i class="ti ti-settings" style="font-size:15px"></i>Fazenda</button>
+    </div>
+  </div>
+  <div class="hdr-bot">
+    <div class="hbf" onclick="openMod('mod-fazenda')">
+      <i class="ti ti-map-pin hbf-ico"></i>
+      <div><div class="hbf-lbl">Fazenda</div><div class="hbf-val ph" id="hb-faz">Clique para configurar</div></div>
+    </div>
+    <div class="hbf" onclick="openMod('mod-fazenda')">
+      <i class="ti ti-user hbf-ico"></i>
+      <div><div class="hbf-lbl">Proprietário</div><div class="hbf-val ph" id="hb-prop">—</div></div>
+    </div>
+    <div class="hbf" onclick="openMod('mod-fazenda')">
+      <i class="ti ti-map-2 hbf-ico"></i>
+      <div><div class="hbf-lbl">Município / UF</div><div class="hbf-val ph" id="hb-mun">—</div></div>
+    </div>
+    <div class="hbf" style="cursor:default">
+      <i class="ti ti-calendar hbf-ico"></i>
+      <div><div class="hbf-lbl">Safra</div><div class="hbf-val" id="hb-safra">2025 / 26</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="safra-row">
+  <span style="font-size:12px;color:rgba(255,255,255,0.55);font-weight:500">Cultura ativa:</span>
+  <button class="sp s-soja" onclick="this.classList.toggle('off')"><span class="dot"></span>Soja — Safra</button>
+  <button class="sp s-milho" onclick="this.classList.toggle('off')"><span class="dot"></span>Milho — Safrinha</button>
+</div>
+
+<div class="nav">
+  <button class="nb on"  onclick="go('plantacao',this)"><i class="ti ti-seeding"></i>Plantação</button>
+  <button class="nb"     onclick="go('diario',this)"><i class="ti ti-notebook"></i>Diário</button>
+  <button class="nb"     onclick="go('pragas',this)"><i class="ti ti-bug"></i>Pragas</button>
+  <button class="nb"     onclick="go('doencas',this)"><i class="ti ti-virus"></i>Doenças</button>
+  <button class="nb"     onclick="go('colheita',this)"><i class="ti ti-tractor"></i>Colheita</button>
+  <button class="nb"     onclick="go('relatorios',this)"><i class="ti ti-chart-bar"></i>Relatórios</button>
+</div>
+
+<!-- ══════════════ PLANTAÇÃO ══════════════ -->
+<div id="s-plantacao" class="sec on">
+  <!-- métricas editáveis -->
+  <div class="mg" id="mg-plant">
+    <div class="mc" onclick="editMetric('area_total','Área total (ha)','number')">
+      <div class="mc-lbl">Área total</div>
+      <div class="mc-val mv-green" id="mv-area_total">—<span class="mc-unit"> ha</span></div>
+      <i class="ti ti-pencil mc-edit"></i>
+    </div>
+    <div class="mc" onclick="editMetric('talhoes_ativos','Talhões ativos','number')">
+      <div class="mc-lbl">Talhões ativos</div>
+      <div class="mc-val" id="mv-talhoes_ativos">—</div>
+      <i class="ti ti-pencil mc-edit"></i>
+    </div>
+    <div class="mc" onclick="editMetric('estadio_medio','Estádio médio','text')">
+      <div class="mc-lbl">Estádio médio</div>
+      <div class="mc-val mv-green" id="mv-estadio_medio">—</div>
+      <i class="ti ti-pencil mc-edit"></i>
+    </div>
+    <div class="mc warn" onclick="editMetric('prox_aplicacao','Próxima aplicação (dias)','number')">
+      <div class="mc-lbl">Próx. aplicação</div>
+      <div class="mc-val mv-amber" id="mv-prox_aplicacao">—<span class="mc-unit" id="mu-prox"> dias</span></div>
+      <i class="ti ti-pencil mc-edit"></i>
+    </div>
+  </div>
+
+  <!-- cadastro talhão -->
+  <div class="card al">
+    <div class="ch">
+      <span class="ct"><i class="ti ti-map-2"></i>Cadastro de talhão</span>
+      <button class="btn btn-p" onclick="saveTalhao()"><i class="ti ti-device-floppy"></i>Salvar talhão</button>
+    </div>
+    <input type="hidden" id="t-editing-id">
+    <div class="fr">
+      <div class="fg"><label>Nome / código</label><input type="text" id="t-nome" placeholder="Ex: T-07 Norte"></div>
+      <div class="fg"><label>Área (ha)</label><input type="number" id="t-area" placeholder="0.0" step="0.1"></div>
+      <div class="fg"><label>Cultura</label>
+        <select id="t-cultura"><option value="">Selecionar...</option><option>Soja — Safra</option><option>Milho — Safrinha</option></select>
+      </div>
+      <div class="fg"><label>Data de plantio</label><input type="date" id="t-data"></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>Estádio fenológico</label>
+        <select id="t-estadio">
+          <option value="">—</option>
+          <optgroup label="Vegetativo"><option>VE</option><option>V1</option><option>V2</option><option>V3</option><option>V4</option><option>V5</option><option>V6</option><option>V7</option><option>V8</option></optgroup>
+          <optgroup label="Reprodutivo"><option>R1 — Floração</option><option>R2</option><option>R3</option><option>R4</option><option>R5 — Enchimento</option><option>R6</option><option>R7 — Maturação</option><option>R8</option></optgroup>
+        </select>
+      </div>
+      <div class="fg"><label>Espaçamento (cm)</label><input type="number" id="t-espac" placeholder="Ex: 45"></div>
+      <div class="fg"><label>Pop. plantas (pl/ha)</label><input type="number" id="t-pop" placeholder="Ex: 320000"></div>
+    </div>
+    <div class="cvbx">
+      <div class="exrow">
+        <div class="exlbl"><span class="fico hrv"><i class="ti ti-flask"></i></span>Cultivar experimental</div>
+        <label class="tgl"><input type="checkbox" id="tog-exp" onchange="toggleExp()"><span class="tgl-tr"></span></label>
+      </div>
+      <div class="exrv" id="exp-rv">
+        <div class="exp-badge"><i class="ti ti-flask"></i>Cultivar em teste / ensaio de campo</div>
+        <div class="fr" style="margin-bottom:0">
+          <div class="fg"><label>Identificação</label><input type="text" id="t-expnome" placeholder="Ex: BRS 562 — Ensaio A3"></div>
+          <div class="fg"><label>Instituição</label><input type="text" id="t-expinst" placeholder="Ex: Embrapa Soja"></div>
+          <div class="fg"><label>Nº protocolo</label><input type="text" id="t-expprot" placeholder="Ex: ENS-2025-047"></div>
+        </div>
+      </div>
+      <div style="margin-top:12px" id="cv-std">
+        <div class="fr" style="margin-bottom:0">
+          <div class="fg"><label>Cultivar comercial</label><input type="text" id="t-cvnome" placeholder="Ex: TMGB 1180 IPRO"></div>
+          <div class="fg"><label>Tecnologia</label>
+            <select id="t-cvtech"><option value="">—</option><option>Convencional</option><option>Roundup Ready</option><option>IPRO</option><option>ENLIST</option><option>Viptera</option><option>Herculex</option></select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- tabela talhões -->
+  <div class="card">
+    <div class="ch"><span class="ct"><i class="ti ti-list"></i>Talhões cadastrados</span><span id="talhoes-count" style="font-size:11px;color:rgba(255,255,255,0.55)">0 talhões</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Código</th><th>Cultura</th><th>Área (ha)</th><th>Plantio</th><th>Estádio</th><th>Cultivar</th><th>Ações</th></tr></thead>
+        <tbody id="tbl-talhoes"><tr><td colspan="7"><div class="empty"><i class="ti ti-seeding"></i><p>Nenhum talhão cadastrado ainda</p></div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ DIÁRIO ══════════════ -->
+<div id="s-diario" class="sec">
+  <div class="tabs">
+    <div class="tab on" onclick="goTab('tab-aplic',this)">Aplicações</div>
+    <div class="tab"    onclick="goTab('tab-dani',this)">Daninhas</div>
+  </div>
+
+  <div id="tab-aplic" class="sub on">
+    <div class="card al">
+      <div class="ch"><span class="ct"><i class="ti ti-droplet"></i>Registrar aplicação</span></div>
+      <input type="hidden" id="d-editing-id">
+      <div class="fr">
+        <div class="fg"><label>Talhão</label>
+          <input type="text" id="d-talhao" placeholder="Ex: T-01 Sul, T-02 Norte (livre)">
+        </div>
+        <div class="fg"><label>Data</label><input type="date" id="d-data"></div>
+        <div class="fg"><label>Tipo</label>
+          <select id="d-tipo">
+            <option value="">—</option><option value="herbicida">Herbicida</option><option value="fungicida">Fungicida</option>
+            <option value="inseticida">Inseticida</option><option value="fertilizante">Fertilizante foliar</option>
+            <option value="regulador">Regulador de crescimento</option><option value="inoculante">Inoculante</option>
+          </select>
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fg" style="grid-column:span 2"><label>Produto(s) e dose(s)</label><input type="text" id="d-produto" placeholder="Ex: Glifosato 480 — 2,0 L/ha + Cercobin 700 WP — 1,0 kg/ha"></div>
+        <div class="fg"><label>Vol. calda (L/ha)</label><input type="number" id="d-volume" placeholder="Ex: 120"></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Estádio</label>
+          <select id="d-estadio"><option value="">—</option><option>VE</option><option>V1</option><option>V2</option><option>V3</option><option>V4</option><option>V5</option><option>V6</option><option>R1</option><option>R2</option><option>R3</option><option>R4</option><option>R5</option></select>
+        </div>
+        <div class="fg"><label>Temp. / UR (%)</label><input type="text" id="d-clima" placeholder="Ex: 28°C / 65%"></div>
+        <div class="fg"><label>Vento (km/h)</label><input type="number" id="d-vento" placeholder="Ex: 8"></div>
+      </div>
+      <div class="fg" style="margin-bottom:12px"><label>Observações técnicas</label><textarea id="d-obs" placeholder="Condições de campo, uniformidade, sintomas, recomendações..."></textarea></div>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button class="btn btn-s" onclick="clearDiario()"><i class="ti ti-x"></i>Limpar</button>
+        <button class="btn btn-p" onclick="saveDiario()"><i class="ti ti-device-floppy"></i>Salvar</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><span class="ct"><i class="ti ti-list"></i>Registros salvos</span><span id="diario-count" style="font-size:11px;color:rgba(255,255,255,0.55)">0 registros</span></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Data</th><th>Tipo</th><th>Talhão</th><th>Produto(s)</th><th>Calda</th><th>Estádio</th><th>Clima</th><th>Ações</th></tr></thead>
+          <tbody id="tbl-diario"><tr><td colspan="8"><div class="empty"><i class="ti ti-droplet"></i><p>Nenhuma aplicação registrada</p></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-dani" class="sub">
+    <div class="card al">
+      <div class="ch"><span class="ct"><i class="ti ti-leaf"></i>Registrar daninha</span></div>
+      <input type="hidden" id="dn-editing-id">
+      <div class="fr">
+        <div class="fg"><label>Espécie identificada</label><input type="text" id="dn-especie" placeholder="Ex: Corda-de-viola (Ipomoea sp.)"></div>
+        <div class="fg"><label>Talhão</label><input type="text" id="dn-talhao" placeholder="Ex: T-01 Sul"></div>
+        <div class="fg"><label>Densidade (pl/m²)</label><input type="number" id="dn-dens" placeholder="Ex: 3" step="0.1"></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Estádio</label><select id="dn-estadio"><option>Plântula (2–4 folhas)</option><option>Jovem (4–6 folhas)</option><option>Adulta</option><option>Floração</option></select></div>
+        <div class="fg"><label>Data</label><input type="date" id="dn-data"></div>
+      </div>
+      <div class="fg" style="margin-bottom:12px">
+        <label>Suspeita de resistência</label>
+        <div class="tg" id="tg-resist">
+          <span class="tg-i tg-soil" onclick="this.classList.toggle('off')">Grupo 9 (EPSP)</span>
+          <span class="tg-i tg-soil" onclick="this.classList.toggle('off')">Grupo 2 (ALS)</span>
+          <span class="tg-i tg-soil" onclick="this.classList.toggle('off')">Grupo 27 (HPPD)</span>
+          <span class="tg-i tg-soil" onclick="this.classList.toggle('off')">Grupo 5 (Triazinas)</span>
+          <span class="tg-i tg-soil" onclick="this.classList.toggle('off')">ACCase</span>
+          <span class="tg-i tg-soil" onclick="this.classList.toggle('off')">Sem suspeita</span>
+        </div>
+      </div>
+      <div class="fg" style="margin-bottom:12px"><label>Observações</label><textarea id="dn-obs" placeholder="Distribuição, histórico, recomendação..."></textarea></div>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button class="btn btn-s" onclick="clearDaninha()"><i class="ti ti-x"></i>Limpar</button>
+        <button class="btn btn-p" onclick="saveDaninha()"><i class="ti ti-device-floppy"></i>Salvar</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><span class="ct"><i class="ti ti-list"></i>Daninhas registradas</span><span id="dani-count" style="font-size:11px;color:rgba(255,255,255,0.55)">0 registros</span></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Data</th><th>Espécie</th><th>Talhão</th><th>Densidade</th><th>Estádio</th><th>Observações</th><th>Ações</th></tr></thead>
+          <tbody id="tbl-dani"><tr><td colspan="7"><div class="empty"><i class="ti ti-leaf"></i><p>Nenhuma daninha registrada</p></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ PRAGAS ══════════════ -->
+<div id="s-pragas" class="sec">
+  <div class="card al">
+    <div class="ch"><span class="ct"><i class="ti ti-bug"></i>Registrar praga</span></div>
+    <input type="hidden" id="p-editing-id">
+    <div class="fr">
+      <div class="fg"><label>Praga identificada</label>
+        <input type="text" id="p-praga" list="lista-pragas" placeholder="Ex: Lagarta-do-cartucho ou livre">
+        <datalist id="lista-pragas">
+          <option>Lagarta-do-cartucho (S. frugiperda)</option><option>Lagarta-falsa-medideira (C. includens)</option>
+          <option>Percevejo-marrom (E. heros)</option><option>Percevejo-verde (N. viridula)</option>
+          <option>Mosca-branca (B. tabaci)</option><option>Pulgão (A. glycines)</option>
+          <option>Trips (F. schultzei)</option><option>Cigarrinha-das-pastagens</option>
+          <option>Spodoptera cosmioides</option><option>Helicoverpa armigera</option>
+        </datalist>
+      </div>
+      <div class="fg"><label>Talhão</label><input type="text" id="p-talhao" placeholder="Ex: T-01 Sul"></div>
+      <div class="fg"><label>Data</label><input type="date" id="p-data"></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>Amostragem</label><select id="p-metodo"><option>Pano-de-batida</option><option>Armadilha feromônio</option><option>Rede entomológica</option><option>Observação direta</option></select></div>
+      <div class="fg"><label>Infestação</label><input type="text" id="p-infest" placeholder="Ex: 2,3 insetos/m"></div>
+      <div class="fg"><label>Nível de ação</label>
+        <select id="p-nivel"><option value="nao">Não atingido</option><option value="sim">Atingido — controle necessário</option></select>
+      </div>
+    </div>
+    <div class="fg" style="margin-bottom:12px"><label>Observações técnicas</label><textarea id="p-obs" placeholder="Distribuição, predadores, MIP..."></textarea></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px">
+      <button class="btn btn-s" onclick="clearPraga()"><i class="ti ti-x"></i>Limpar</button>
+      <button class="btn btn-p" onclick="savePraga()"><i class="ti ti-device-floppy"></i>Salvar</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct"><i class="ti ti-list-check"></i>Pragas registradas</span><span id="pragas-count" style="font-size:11px;color:rgba(255,255,255,0.55)">0 registros</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Data</th><th>Praga</th><th>Talhão</th><th>Infestação</th><th>Nível ação</th><th>Observações</th><th>Ações</th></tr></thead>
+        <tbody id="tbl-pragas"><tr><td colspan="7"><div class="empty"><i class="ti ti-bug"></i><p>Nenhuma praga registrada</p></div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ DOENÇAS ══════════════ -->
+<div id="s-doencas" class="sec">
+  <div class="card al">
+    <div class="ch"><span class="ct"><i class="ti ti-virus"></i>Registrar doença</span></div>
+    <input type="hidden" id="dc-editing-id">
+    <div class="fr">
+      <div class="fg"><label>Doença identificada</label>
+        <input type="text" id="dc-doenca" list="lista-doencas" placeholder="Ex: Ferrugem asiática ou livre">
+        <datalist id="lista-doencas">
+          <option>Ferrugem asiática (P. pachyrhizi)</option><option>Mancha alvo (C. kikuchii)</option>
+          <option>Antracnose (C. truncatum)</option><option>Mofo branco (S. sclerotiorum)</option>
+          <option>Cancro da haste (D. phaseolorum)</option><option>DFC</option>
+          <option>Míldio (P. manshurica)</option><option>Helmintosporiose (E. turcicum)</option>
+          <option>Ferrugem polissora (P. polysora)</option><option>Diplodia (S. maydis)</option>
+        </datalist>
+      </div>
+      <div class="fg"><label>Talhão</label><input type="text" id="dc-talhao" placeholder="Ex: T-02 Norte"></div>
+      <div class="fg"><label>Data</label><input type="date" id="dc-data"></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>Incidência (%)</label><input type="number" id="dc-incid" placeholder="Ex: 15" min="0" max="100"></div>
+      <div class="fg"><label>Severidade</label><select id="dc-sev"><option>Baixa (traço)</option><option>Moderada</option><option>Alta</option><option>Muito alta</option></select></div>
+      <div class="fg"><label>Estádio</label><select id="dc-est"><option value="">—</option><option>V5</option><option>V6</option><option>R1</option><option>R2</option><option>R3</option><option>R4</option><option>R5</option></select></div>
+    </div>
+    <div class="fg" style="margin-bottom:12px"><label>Notas técnicas</label><textarea id="dc-obs" placeholder="Distribuição, condições climáticas, histórico, grupo químico recomendado..."></textarea></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px">
+      <button class="btn btn-s" onclick="clearDoenca()"><i class="ti ti-x"></i>Limpar</button>
+      <button class="btn btn-p" onclick="saveDoenca()"><i class="ti ti-device-floppy"></i>Salvar</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct"><i class="ti ti-list-check"></i>Doenças registradas</span><span id="doencas-count" style="font-size:11px;color:rgba(255,255,255,0.55)">0 registros</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Data</th><th>Doença</th><th>Talhão</th><th>Incidência</th><th>Severidade</th><th>Estádio</th><th>Notas</th><th>Ações</th></tr></thead>
+        <tbody id="tbl-doencas"><tr><td colspan="8"><div class="empty"><i class="ti ti-virus"></i><p>Nenhuma doença registrada</p></div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ COLHEITA ══════════════ -->
+<div id="s-colheita" class="sec">
+  <div class="mg">
+    <div class="mc"><div class="mc-lbl">Área colhida</div><div class="mc-val mv-green" id="mv-col-area">—<span class="mc-unit"> ha</span></div></div>
+    <div class="mc"><div class="mc-lbl">Produt. média</div><div class="mc-val mv-green" id="mv-col-prod">—<span class="mc-unit"> sc/ha</span></div></div>
+    <div class="mc warn"><div class="mc-lbl">Umidade média</div><div class="mc-val mv-amber" id="mv-col-umi">—<span class="mc-unit"> %</span></div></div>
+    <div class="mc"><div class="mc-lbl">Total colhido</div><div class="mc-val" id="mv-col-total">—<span class="mc-unit"> sc</span></div></div>
+  </div>
+
+  <div class="card al">
+    <div class="ch"><span class="ct"><i class="ti ti-tractor"></i>Registrar colheita</span></div>
+    <input type="hidden" id="c-editing-id">
+    <div class="fr">
+      <div class="fg"><label>Talhão</label><input type="text" id="c-talhao" placeholder="Ex: T-01 Sul"></div>
+      <div class="fg"><label>Cultura</label>
+        <select id="c-cultura"><option value="">—</option><option>Soja</option><option>Milho</option></select>
+      </div>
+      <div class="fg"><label>Data</label><input type="date" id="c-data"></div>
+      <div class="fg"><label>Área colhida (ha)</label><input type="number" id="c-area" placeholder="Ex: 82" step="0.1" oninput="calcProd()"></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>Produção total (sc 60kg)</label><input type="number" id="c-prod" placeholder="Ex: 5330" oninput="calcProd()"></div>
+      <div class="fg"><label>Produtividade (sc/ha)</label><input type="text" id="c-scha" placeholder="—" readonly></div>
+      <div class="fg"><label>Produtividade (kg/ha)</label><input type="text" id="c-kgha" placeholder="—" readonly></div>
+    </div>
+    <div class="div"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <span class="fico sky"><i class="ti ti-droplet-half-2"></i></span>
+      <div><div style="font-size:13px;font-weight:600;color:#ffffff">Umidade dos grãos — pré-colheita</div><div style="font-size:11px;color:rgba(255,255,255,0.55)">Insira as medições para calcular a média automaticamente</div></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>Medição 1 (%)</label><input type="number" id="u1" placeholder="Ex: 16,2" step="0.1" oninput="calcUmi()"></div>
+      <div class="fg"><label>Medição 2 (%)</label><input type="number" id="u2" placeholder="Ex: 15,8" step="0.1" oninput="calcUmi()"></div>
+      <div class="fg"><label>Medição 3 (%)</label><input type="number" id="u3" placeholder="Ex: 15,4" step="0.1" oninput="calcUmi()"></div>
+    </div>
+    <div style="background:var(--card2);border-radius:var(--r2);padding:13px;margin-bottom:12px;border:.5px solid var(--bd)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:12px;color:rgba(255,255,255,0.55);font-weight:500">Umidade média</span>
+        <span style="font-size:22px;font-weight:700;font-family:var(--fd)" id="u-media">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,0.55);margin-bottom:4px">
+        <span>0%</span><span>Padrão comercial: 13,0%</span><span>30%</span>
+      </div>
+      <div class="ub"><div class="uf" id="u-fill" style="width:0%"></div></div>
+      <div id="u-status" style="font-size:12px;margin-top:6px;font-weight:500"></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>Equipamento medição</label><input type="text" id="c-equip" placeholder="Ex: Gehaka G800"></div>
+      <div class="fg"><label>Horário</label><input type="time" id="c-hora"></div>
+      <div class="fg"><label>Perdas estimadas (%)</label><input type="number" id="c-perdas" placeholder="Ex: 1,2" step="0.1"></div>
+    </div>
+    <div class="fg" style="margin-bottom:12px"><label>Observações técnicas</label><textarea id="c-obs" placeholder="Regulagem da colhedora, impurezas, condições de trilha..."></textarea></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px">
+      <button class="btn btn-s" onclick="clearCol()"><i class="ti ti-x"></i>Limpar</button>
+      <button class="btn btn-p" onclick="saveCol()"><i class="ti ti-device-floppy"></i>Salvar colheita</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><span class="ct"><i class="ti ti-list"></i>Colheitas registradas</span><span id="col-count" style="font-size:11px;color:rgba(255,255,255,0.55)">0 registros</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Data</th><th>Talhão</th><th>Cultura</th><th>Área (ha)</th><th>Prod. (sc)</th><th>sc/ha</th><th>kg/ha</th><th>Umidade</th><th>Perdas</th><th>Ações</th></tr></thead>
+        <tbody id="tbl-col"><tr><td colspan="10"><div class="empty"><i class="ti ti-tractor"></i><p>Nenhuma colheita registrada</p></div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ RELATÓRIOS ══════════════ -->
+<div id="s-relatorios" class="sec">
+  <div class="mg" id="mg-rel">
+    <div class="mc"><div class="mc-lbl">Talhões cadastrados</div><div class="mc-val" id="rel-talhoes">0</div></div>
+    <div class="mc"><div class="mc-lbl">Aplicações</div><div class="mc-val" id="rel-aplic">0</div></div>
+    <div class="mc"><div class="mc-lbl">Colheitas registradas</div><div class="mc-val mv-green" id="rel-col">0</div></div>
+    <div class="mc"><div class="mc-lbl">Pragas + Doenças</div><div class="mc-val mv-amber" id="rel-pd">0</div></div>
+  </div>
+  <div class="card al">
+    <div class="ch"><span class="ct"><i class="ti ti-chart-line"></i>Produtividade por talhão (sc/ha)</span></div>
+    <div class="chart-w" id="chart-w"></div>
+    <div style="display:flex;gap:7px" id="chart-l"></div>
+    <div id="chart-empty" class="empty" style="display:none"><i class="ti ti-chart-bar"></i><p>Registre colheitas para ver o gráfico</p></div>
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct"><i class="ti ti-file-text"></i>Resumo completo dos dados</span></div>
+    <div id="resumo-wrap" style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.8"></div>
+  </div>
+</div>
+
+</div><!-- /portal -->
+
+<!-- ══ MODAL FAZENDA ══ -->
+<div class="ov" id="mod-fazenda">
+  <div class="mod">
+    <div class="mod-title"><i class="ti ti-map-pin"></i>Dados da fazenda</div>
+    <div class="mod-sub">Essas informações ficam salvas e aparecem no cabeçalho</div>
+    <div class="fr" style="margin-bottom:10px"><div class="fg" style="grid-column:span 2"><label>Nome da fazenda</label><input type="text" id="m-faz" placeholder="Ex: Fazenda Santa Fé"></div></div>
+    <div class="fr" style="margin-bottom:10px"><div class="fg" style="grid-column:span 2"><label>Proprietário / empresa</label><input type="text" id="m-prop" placeholder="Ex: João Carlos Mendonça"></div></div>
+    <div class="fr" style="margin-bottom:10px">
+      <div class="fg"><label>Município</label><input type="text" id="m-mun" placeholder="Ex: Sorriso"></div>
+      <div class="fg"><label>Estado (UF)</label>
+        <select id="m-uf"><option value="">—</option><option>MT</option><option>MS</option><option>PR</option><option>GO</option><option>MG</option><option>SP</option><option>RS</option><option>SC</option><option>BA</option><option>TO</option><option>MA</option><option>PI</option><option>RO</option><option>PA</option></select>
+      </div>
+    </div>
+    <div class="fr" style="margin-bottom:0">
+      <div class="fg"><label>Safra atual</label><input type="text" id="m-safra" placeholder="Ex: 2025/26"></div>
+      <div class="fg"><label>Responsável técnico (CREA)</label><input type="text" id="m-agro" placeholder="Ex: Dr. Carlos Silveira — CREA 12345"></div>
+    </div>
+    <div class="mod-acts">
+      <button class="btn btn-s" onclick="closeMod('mod-fazenda')"><i class="ti ti-x"></i>Cancelar</button>
+      <button class="btn btn-p" onclick="saveFazenda()"><i class="ti ti-device-floppy"></i>Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL EDITAR MÉTRICA ══ -->
+<div class="ov" id="mod-metric">
+  <div class="mod" style="max-width:340px">
+    <div class="mod-title"><i class="ti ti-pencil"></i>Editar valor</div>
+    <div class="mod-sub" id="metric-lbl">—</div>
+    <div class="fg"><label id="metric-field-lbl">Valor</label><input id="metric-input" type="text" placeholder="Digite o valor..."></div>
+    <div class="mod-acts">
+      <button class="btn btn-s" onclick="closeMod('mod-metric')"><i class="ti ti-x"></i>Cancelar</button>
+      <button class="btn btn-p" onclick="saveMetric()"><i class="ti ti-check"></i>Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL CONFIRMAR EXCLUSÃO ══ -->
+<div class="ov" id="mod-confirm">
+  <div class="mod" style="max-width:360px">
+    <div class="mod-title"><i class="ti ti-trash" style="color:var(--red)"></i>Confirmar exclusão</div>
+    <div class="mod-sub">Esta ação não pode ser desfeita. O registro será removido permanentemente.</div>
+    <div class="mod-acts">
+      <button class="btn btn-s" onclick="closeMod('mod-confirm')"><i class="ti ti-x"></i>Cancelar</button>
+      <button class="btn" style="background:var(--red);color:white" onclick="confirmDelete()"><i class="ti ti-trash"></i>Excluir</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="ti ti-check"></i><span id="toast-msg"></span></div>
+
+<script>
+// ══════════════════════════════════════
+// STORAGE — persistência total via localStorage
+// ══════════════════════════════════════
+const DB = {
+  get(k){ try{return JSON.parse(localStorage.getItem('agro_'+k))||null}catch{return null} },
+  set(k,v){ localStorage.setItem('agro_'+k, JSON.stringify(v)) },
+  getArr(k){ return this.get(k)||[] },
+  push(k,item){ const a=this.getArr(k); a.unshift(item); this.set(k,a); return a },
+  update(k,id,item){ const a=this.getArr(k); const i=a.findIndex(x=>x.id===id); if(i>-1){a[i]=item;this.set(k,a)} return a },
+  remove(k,id){ const a=this.getArr(k).filter(x=>x.id!==id); this.set(k,a); return a },
+};
+const uid = ()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const fmtDate = d=>{ if(!d)return '—'; try{return new Date(d+'T00:00:00').toLocaleDateString('pt-BR')}catch{return d} };
+
+// ══ TEMA ══
+function toggleTheme(){
+  const d=document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme',d?'light':'dark');
+  document.getElementById('thm-ico').className=d?'ti ti-moon':'ti ti-sun';
+  localStorage.setItem('agT',d?'light':'dark');
+}
+(function(){
+  const s=localStorage.getItem('agT');
+  if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('thm-ico').className='ti ti-sun';}
+})();
+
+// ══ NAV ══
+function go(id,btn){ document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on')); document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on')); document.getElementById('s-'+id).classList.add('on'); btn.classList.add('on'); if(id==='relatorios')renderRelatorios(); }
+function goTab(id,btn){ document.querySelectorAll('.sub').forEach(s=>s.classList.remove('on')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on')); document.getElementById(id).classList.add('on'); btn.classList.add('on'); }
+
+// ══ MODAIS ══
+function openMod(id){
+  document.getElementById(id).classList.add('on');
+  if(id==='mod-fazenda') loadFazendaForm();
+}
+function closeMod(id){ document.getElementById(id).classList.remove('on'); }
+document.querySelectorAll('.ov').forEach(el=>el.addEventListener('click',function(e){if(e.target===this)this.classList.remove('on')}));
+
+// ══ TOAST ══
+let tt;
+function toast(msg,ok=true){
+  clearTimeout(tt); const el=document.getElementById('toast');
+  el.style.background=ok?'linear-gradient(135deg,var(--leaf) 0%,var(--leaf2) 100%)':'var(--red)';
+  document.getElementById('toast-msg').textContent=msg;
+  el.classList.remove('on'); void el.offsetWidth; el.classList.add('on');
+  tt=setTimeout(()=>el.classList.remove('on'),3000);
+}
+
+// ══ FAZENDA ══
+function loadFazendaForm(){
+  const f=DB.get('fazenda')||{};
+  ['faz','prop','mun','uf','safra','agro'].forEach(k=>{ const el=document.getElementById('m-'+k); if(el)el.value=f[k]||''; });
+}
+function saveFazenda(){
+  const f={faz:v('m-faz'),prop:v('m-prop'),mun:v('m-mun'),uf:v('m-uf'),safra:v('m-safra'),agro:v('m-agro')};
+  DB.set('fazenda',f);
+  renderFazendaHeader(f);
+  closeMod('mod-fazenda');
+  toast('Dados da fazenda salvos!');
+}
+function renderFazendaHeader(f){
+  const set=(id,val,ph)=>{const el=document.getElementById(id);if(!el)return;el.textContent=val||ph;el.classList.toggle('ph',!val);};
+  set('hb-faz',f.faz,'Clique para configurar');
+  set('hb-prop',f.prop,'—');
+  set('hb-mun',(f.mun&&f.uf)?f.mun+' / '+f.uf:(f.mun||f.uf||''),'—');
+  if(f.safra) document.getElementById('hb-safra').textContent=f.safra;
+  if(f.agro) document.getElementById('badge-agro').innerHTML=`<i class="ti ti-microscope" style="font-size:13px"></i>${f.agro}`;
+  if(f.faz) document.title=f.faz+' — AgroField Pro';
+}
+(function(){ const f=DB.get('fazenda'); if(f) renderFazendaHeader(f); })();
+
+// ══ MÉTRICA EDITÁVEL ══
+let _metricKey='';
+function editMetric(key,lbl,type){
+  _metricKey=key;
+  document.getElementById('metric-lbl').textContent=lbl;
+  document.getElementById('metric-field-lbl').textContent=lbl;
+  const inp=document.getElementById('metric-input');
+  inp.type=type; inp.value=DB.get('metric_'+key)||'';
+  openMod('mod-metric');
+  setTimeout(()=>inp.focus(),100);
+}
+function saveMetric(){
+  const val=v('metric-input');
+  DB.set('metric_'+_metricKey,val);
+  renderMetrics();
+  closeMod('mod-metric');
+  toast('Valor atualizado!');
+}
+function renderMetrics(){
+  const keys=['area_total','talhoes_ativos','estadio_medio','prox_aplicacao'];
+  const units={area_total:' ha',prox_aplicacao:' dias'};
+  keys.forEach(k=>{
+    const el=document.getElementById('mv-'+k); if(!el)return;
+    const val=DB.get('metric_'+k)||'';
+    const u=units[k]||'';
+    el.innerHTML=val?(val+'<span class="mc-unit">'+u+'</span>'):'—<span class="mc-unit">'+u+'</span>';
+  });
+}
+renderMetrics();
+
+// ══ TALHÕES ══
+function toggleExp(){ const on=document.getElementById('tog-exp').checked; document.getElementById('exp-rv').classList.toggle('on',on); document.getElementById('cv-std').style.display=on?'none':''; }
+function v(id){ return document.getElementById(id)?.value?.trim()||''; }
+
+function saveTalhao(){
+  const nome=v('t-nome'), area=v('t-area'), cult=v('t-cultura'), data=v('t-data');
+  if(!nome){ toast('Informe o nome do talhão',false); return; }
+  const editId=v('t-editing-id');
+  const exp=document.getElementById('tog-exp').checked;
+  const item={
+    id: editId||uid(), nome, area, cultura:cult, data, estadio:v('t-estadio'),
+    espac:v('t-espac'), pop:v('t-pop'),
+    experimental:exp,
+    expnome:v('t-expnome'), expinst:v('t-expinst'), expprot:v('t-expprot'),
+    cvnome:v('t-cvnome'), cvtech:v('t-cvtech'),
+    criado:editId?undefined:new Date().toISOString()
+  };
+  if(editId){ DB.update('talhoes',editId,item); toast('Talhão atualizado!'); }
+  else { DB.push('talhoes',item); toast('Talhão salvo!'); }
+  clearTalhao(); renderTalhoes();
+}
+function clearTalhao(){
+  ['t-nome','t-area','t-cultura','t-data','t-estadio','t-espac','t-pop','t-expnome','t-expinst','t-expprot','t-cvnome','t-cvtech','t-editing-id'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('tog-exp').checked=false; toggleExp();
+}
+function editTalhao(id){
+  const a=DB.getArr('talhoes'); const item=a.find(x=>x.id===id); if(!item)return;
+  ['nome','area','cultura','data','estadio','espac','pop','expnome','expinst','expprot','cvnome','cvtech'].forEach(k=>{const el=document.getElementById('t-'+k);if(el)el.value=item[k]||'';});
+  document.getElementById('t-editing-id').value=id;
+  document.getElementById('tog-exp').checked=!!item.experimental; toggleExp();
+  go('plantacao',document.querySelector('.nb')); window.scrollTo({top:0,behavior:'smooth'});
+  toast('Editando talhão — altere e salve novamente');
+}
+function renderTalhoes(){
+  const a=DB.getArr('talhoes');
+  const tb=document.getElementById('tbl-talhoes');
+  document.getElementById('talhoes-count').textContent=a.length+' talhão(ões)';
+  if(!a.length){tb.innerHTML='<tr><td colspan="7"><div class="empty"><i class="ti ti-seeding"></i><p>Nenhum talhão cadastrado ainda</p></div></td></tr>';return;}
+  tb.innerHTML=a.map(t=>`<tr>
+    <td><strong>${t.nome}</strong></td>
+    <td><span class="pill ${t.cultura?.includes('Soja')?'pill-soja':'pill-milho'}">${t.cultura||'—'}</span></td>
+    <td class="muted">${t.area||'—'} ha</td>
+    <td class="muted">${fmtDate(t.data)}</td>
+    <td class="muted">${t.estadio||'—'}</td>
+    <td class="muted">${t.experimental?'⚗ '+t.expnome:t.cvnome||'—'}</td>
+    <td><div class="acts"><button class="btn btn-e" onclick="editTalhao('${t.id}')"><i class="ti ti-pencil"></i>Editar</button><button class="btn btn-d" onclick="askDelete('talhoes','${t.id}',renderTalhoes)"><i class="ti ti-trash"></i></button></div></td>
+  </tr>`).join('');
+}
+renderTalhoes();
+
+// ══ DIÁRIO ══
+function saveDiario(){
+  const tipo=v('d-tipo'), prod=v('d-produto');
+  if(!tipo||!prod){ toast('Preencha o tipo e o produto',false); return; }
+  const editId=v('d-editing-id');
+  const item={
+    id:editId||uid(), tipo, produto:prod, talhao:v('d-talhao'),
+    data:v('d-data'), volume:v('d-volume'), estadio:v('d-estadio'),
+    clima:v('d-clima'), vento:v('d-vento'), obs:v('d-obs')
+  };
+  if(editId){ DB.update('diario',editId,item); toast('Registro atualizado!'); }
+  else { DB.push('diario',item); toast('Adicionado ao diário!'); }
+  clearDiario(); renderDiario();
+}
+function clearDiario(){
+  ['d-tipo','d-produto','d-talhao','d-data','d-volume','d-estadio','d-clima','d-vento','d-obs','d-editing-id'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+}
+function editDiario(id){
+  const item=DB.getArr('diario').find(x=>x.id===id); if(!item)return;
+  ['tipo','produto','talhao','data','volume','estadio','clima','vento','obs'].forEach(k=>{const el=document.getElementById('d-'+k);if(el)el.value=item[k]||'';});
+  document.getElementById('d-editing-id').value=id;
+  goTab('tab-aplic',document.querySelector('.tab')); window.scrollTo({top:0,behavior:'smooth'});
+  toast('Editando — altere e salve novamente');
+}
+const pillTipo={herbicida:'pill-herb',fungicida:'pill-fung',inseticida:'pill-inset',fertilizante:'pill-fert',regulador:'pill-reg',inoculante:'pill-inoc'};
+function renderDiario(){
+  const a=DB.getArr('diario');
+  const tb=document.getElementById('tbl-diario');
+  document.getElementById('diario-count').textContent=a.length+' registros';
+  if(!a.length){tb.innerHTML='<tr><td colspan="8"><div class="empty"><i class="ti ti-droplet"></i><p>Nenhuma aplicação registrada</p></div></td></tr>';return;}
+  tb.innerHTML=a.map(r=>`<tr>
+    <td class="muted">${fmtDate(r.data)}</td>
+    <td><span class="pill ${pillTipo[r.tipo]||''}">${r.tipo||'—'}</span></td>
+    <td class="muted">${r.talhao||'—'}</td>
+    <td>${r.produto}</td>
+    <td class="muted">${r.volume?r.volume+' L/ha':'—'}</td>
+    <td class="muted">${r.estadio||'—'}</td>
+    <td class="muted">${r.clima||'—'}</td>
+    <td><div class="acts"><button class="btn btn-e" onclick="editDiario('${r.id}')"><i class="ti ti-pencil"></i>Editar</button><button class="btn btn-d" onclick="askDelete('diario','${r.id}',renderDiario)"><i class="ti ti-trash"></i></button></div></td>
+  </tr>`).join('');
+}
+renderDiario();
+
+// ══ DANINHAS ══
+function saveDaninha(){
+  const esp=v('dn-especie'); if(!esp){toast('Informe a espécie',false);return;}
+  const editId=v('dn-editing-id');
+  const item={id:editId||uid(),especie:esp,talhao:v('dn-talhao'),data:v('dn-data'),dens:v('dn-dens'),estadio:v('dn-estadio'),obs:v('dn-obs')};
+  if(editId){DB.update('daninhas',editId,item);toast('Daninha atualizada!');}
+  else{DB.push('daninhas',item);toast('Daninha registrada!');}
+  clearDaninha(); renderDaninhas();
+}
+function clearDaninha(){
+  ['dn-especie','dn-talhao','dn-data','dn-dens','dn-obs','dn-editing-id'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+}
+function editDaninha(id){
+  const item=DB.getArr('daninhas').find(x=>x.id===id);if(!item)return;
+  ['especie','talhao','data','dens','estadio','obs'].forEach(k=>{const el=document.getElementById('dn-'+k);if(el)el.value=item[k]||'';});
+  document.getElementById('dn-editing-id').value=id;
+  goTab('tab-dani',document.querySelectorAll('.tab')[1]);
+  window.scrollTo({top:0,behavior:'smooth'});
+  toast('Editando — altere e salve novamente');
+}
+function renderDaninhas(){
+  const a=DB.getArr('daninhas');
+  const tb=document.getElementById('tbl-dani');
+  document.getElementById('dani-count').textContent=a.length+' registros';
+  if(!a.length){tb.innerHTML='<tr><td colspan="7"><div class="empty"><i class="ti ti-leaf"></i><p>Nenhuma daninha registrada</p></div></td></tr>';return;}
+  tb.innerHTML=a.map(r=>`<tr>
+    <td class="muted">${fmtDate(r.data)}</td>
+    <td><strong>${r.especie}</strong></td>
+    <td class="muted">${r.talhao||'—'}</td>
+    <td class="muted">${r.dens?r.dens+' pl/m²':'—'}</td>
+    <td class="muted">${r.estadio||'—'}</td>
+    <td class="muted">${r.obs||'—'}</td>
+    <td><div class="acts"><button class="btn btn-e" onclick="editDaninha('${r.id}')"><i class="ti ti-pencil"></i>Editar</button><button class="btn btn-d" onclick="askDelete('daninhas','${r.id}',renderDaninhas)"><i class="ti ti-trash"></i></button></div></td>
+  </tr>`).join('');
+}
+renderDaninhas();
+
+// ══ PRAGAS ══
+function savePraga(){
+  const praga=v('p-praga'); if(!praga){toast('Informe a praga',false);return;}
+  const editId=v('p-editing-id');
+  const item={id:editId||uid(),praga,talhao:v('p-talhao'),data:v('p-data'),metodo:v('p-metodo'),infest:v('p-infest'),nivel:v('p-nivel'),obs:v('p-obs')};
+  if(editId){DB.update('pragas',editId,item);toast('Praga atualizada!');}
+  else{DB.push('pragas',item);toast('Praga registrada!');}
+  clearPraga(); renderPragas();
+}
+function clearPraga(){
+  ['p-praga','p-talhao','p-data','p-infest','p-obs','p-editing-id'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  const s=document.getElementById('p-nivel');if(s)s.value='nao';
+}
+function editPraga(id){
+  const item=DB.getArr('pragas').find(x=>x.id===id);if(!item)return;
+  ['praga','talhao','data','metodo','infest','nivel','obs'].forEach(k=>{const el=document.getElementById('p-'+k);if(el)el.value=item[k]||'';});
+  document.getElementById('p-editing-id').value=id;
+  go('pragas',document.querySelectorAll('.nb')[2]);
+  window.scrollTo({top:0,behavior:'smooth'});
+  toast('Editando — altere e salve novamente');
+}
+function renderPragas(){
+  const a=DB.getArr('pragas');
+  const tb=document.getElementById('tbl-pragas');
+  document.getElementById('pragas-count').textContent=a.length+' registros';
+  if(!a.length){tb.innerHTML='<tr><td colspan="7"><div class="empty"><i class="ti ti-bug"></i><p>Nenhuma praga registrada</p></div></td></tr>';return;}
+  tb.innerHTML=a.map(r=>`<tr>
+    <td class="muted">${fmtDate(r.data)}</td>
+    <td><strong>${r.praga}</strong></td>
+    <td class="muted">${r.talhao||'—'}</td>
+    <td class="muted">${r.infest||'—'}</td>
+    <td><span class="pill ${r.nivel==='sim'?'pill-alto':'pill-baixo'}">${r.nivel==='sim'?'Atingido':'Não atingido'}</span></td>
+    <td class="muted">${r.obs||'—'}</td>
+    <td><div class="acts"><button class="btn btn-e" onclick="editPraga('${r.id}')"><i class="ti ti-pencil"></i>Editar</button><button class="btn btn-d" onclick="askDelete('pragas','${r.id}',renderPragas)"><i class="ti ti-trash"></i></button></div></td>
+  </tr>`).join('');
+}
+renderPragas();
+
+// ══ DOENÇAS ══
+function saveDoenca(){
+  const dc=v('dc-doenca');if(!dc){toast('Informe a doença',false);return;}
+  const editId=v('dc-editing-id');
+  const item={id:editId||uid(),doenca:dc,talhao:v('dc-talhao'),data:v('dc-data'),incid:v('dc-incid'),sev:v('dc-sev'),est:v('dc-est'),obs:v('dc-obs')};
+  if(editId){DB.update('doencas',editId,item);toast('Doença atualizada!');}
+  else{DB.push('doencas',item);toast('Doença registrada!');}
+  clearDoenca(); renderDoencas();
+}
+function clearDoenca(){
+  ['dc-doenca','dc-talhao','dc-data','dc-incid','dc-obs','dc-editing-id'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+}
+function editDoenca(id){
+  const item=DB.getArr('doencas').find(x=>x.id===id);if(!item)return;
+  ['doenca','talhao','data','incid','sev','est','obs'].forEach(k=>{const el=document.getElementById('dc-'+k);if(el)el.value=item[k]||'';});
+  document.getElementById('dc-editing-id').value=id;
+  go('doencas',document.querySelectorAll('.nb')[3]);
+  window.scrollTo({top:0,behavior:'smooth'});
+  toast('Editando — altere e salve novamente');
+}
+function renderDoencas(){
+  const a=DB.getArr('doencas');
+  const tb=document.getElementById('tbl-doencas');
+  document.getElementById('doencas-count').textContent=a.length+' registros';
+  if(!a.length){tb.innerHTML='<tr><td colspan="8"><div class="empty"><i class="ti ti-virus"></i><p>Nenhuma doença registrada</p></div></td></tr>';return;}
+  const sevPill={Moderada:'pill-medio',Alta:'pill-alto','Muito alta':'pill-alto'};
+  tb.innerHTML=a.map(r=>`<tr>
+    <td class="muted">${fmtDate(r.data)}</td>
+    <td><strong>${r.doenca}</strong></td>
+    <td class="muted">${r.talhao||'—'}</td>
+    <td class="muted">${r.incid?r.incid+'%':'—'}</td>
+    <td><span class="pill ${sevPill[r.sev]||'pill-baixo'}">${r.sev}</span></td>
+    <td class="muted">${r.est||'—'}</td>
+    <td class="muted">${r.obs||'—'}</td>
+    <td><div class="acts"><button class="btn btn-e" onclick="editDoenca('${r.id}')"><i class="ti ti-pencil"></i>Editar</button><button class="btn btn-d" onclick="askDelete('doencas','${r.id}',renderDoencas)"><i class="ti ti-trash"></i></button></div></td>
+  </tr>`).join('');
+}
+renderDoencas();
+
+// ══ COLHEITA ══
+function calcProd(){
+  const a=parseFloat(document.getElementById('c-area').value)||0;
+  const p=parseFloat(document.getElementById('c-prod').value)||0;
+  if(a>0&&p>0){document.getElementById('c-scha').value=(p/a).toFixed(1)+' sc/ha';document.getElementById('c-kgha').value=((p*60)/a).toFixed(0)+' kg/ha';}
+  else{document.getElementById('c-scha').value='';document.getElementById('c-kgha').value='';}
+}
+function calcUmi(){
+  const v1=parseFloat(document.getElementById('u1').value),v2=parseFloat(document.getElementById('u2').value),v3=parseFloat(document.getElementById('u3').value);
+  const vals=[v1,v2,v3].filter(x=>!isNaN(x));
+  if(!vals.length){document.getElementById('u-media').textContent='—';return;}
+  const avg=vals.reduce((a,b)=>a+b)/vals.length;
+  document.getElementById('u-media').textContent=avg.toFixed(1)+'%';
+  const f=document.getElementById('u-fill');
+  f.style.width=Math.min((avg/30)*100,100)+'%';
+  f.style.background=avg<=13?'var(--leaf2)':avg<=15.5?'var(--hrv)':'var(--red)';
+  const st=document.getElementById('u-status');
+  if(avg<=13) st.innerHTML='<span style="color:var(--leaf)">✓ Dentro do padrão comercial (≤13,0%)</span>';
+  else if(avg<=15.5) st.innerHTML='<span style="color:var(--hrv)">⚠ Elevada — verificar necessidade de secagem</span>';
+  else st.innerHTML='<span style="color:var(--red)">✗ Acima do limite — secagem obrigatória</span>';
+}
+function saveCol(){
+  const area=v('c-area'),prod=v('c-prod');
+  if(!area||!prod){toast('Preencha área e produção',false);return;}
+  const editId=v('c-editing-id');
+  const umi=document.getElementById('u-media').textContent;
+  const item={
+    id:editId||uid(),talhao:v('c-talhao'),cultura:v('c-cultura'),
+    data:v('c-data'),area,prod,
+    scha:document.getElementById('c-scha').value,
+    kgha:document.getElementById('c-kgha').value,
+    umi,equip:v('c-equip'),hora:v('c-hora'),perdas:v('c-perdas'),obs:v('c-obs')
+  };
+  if(editId){DB.update('colheitas',editId,item);toast('Colheita atualizada!');}
+  else{DB.push('colheitas',item);toast('Colheita registrada!');}
+  clearCol(); renderColheitas(); updateColMetrics();
+}
+function clearCol(){
+  ['c-talhao','c-cultura','c-data','c-area','c-prod','c-scha','c-kgha','c-equip','c-hora','c-perdas','c-obs','c-editing-id','u1','u2','u3'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('u-media').textContent='—';
+  document.getElementById('u-fill').style.width='0%';
+  document.getElementById('u-status').innerHTML='';
+}
+function editColheita(id){
+  const item=DB.getArr('colheitas').find(x=>x.id===id);if(!item)return;
+  ['talhao','cultura','data','area','prod','equip','hora','perdas','obs'].forEach(k=>{const el=document.getElementById('c-'+k);if(el)el.value=item[k]||'';});
+  document.getElementById('c-editing-id').value=id;
+  calcProd();
+  go('colheita',document.querySelectorAll('.nb')[4]);
+  window.scrollTo({top:0,behavior:'smooth'});
+  toast('Editando — altere e salve novamente');
+}
+function renderColheitas(){
+  const a=DB.getArr('colheitas');
+  const tb=document.getElementById('tbl-col');
+  document.getElementById('col-count').textContent=a.length+' registros';
+  if(!a.length){tb.innerHTML='<tr><td colspan="10"><div class="empty"><i class="ti ti-tractor"></i><p>Nenhuma colheita registrada</p></div></td></tr>';return;}
+  tb.innerHTML=a.map(r=>`<tr>
+    <td class="muted">${fmtDate(r.data)}</td>
+    <td><strong>${r.talhao||'—'}</strong></td>
+    <td><span class="pill ${r.cultura==='Soja'?'pill-soja':'pill-milho'}">${r.cultura||'—'}</span></td>
+    <td class="muted">${r.area} ha</td>
+    <td class="muted">${r.prod}</td>
+    <td class="muted">${r.scha}</td>
+    <td class="muted">${r.kgha}</td>
+    <td class="muted">${r.umi}</td>
+    <td class="muted">${r.perdas?r.perdas+'%':'—'}</td>
+    <td><div class="acts"><button class="btn btn-e" onclick="editColheita('${r.id}')"><i class="ti ti-pencil"></i>Editar</button><button class="btn btn-d" onclick="askDelete('colheitas','${r.id}',()=>{renderColheitas();updateColMetrics();})"><i class="ti ti-trash"></i></button></div></td>
+  </tr>`).join('');
+}
+function updateColMetrics(){
+  const a=DB.getArr('colheitas');
+  if(!a.length){['mv-col-area','mv-col-prod','mv-col-umi','mv-col-total'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='—<span class="mc-unit"></span>';});return;}
+  const totalArea=a.reduce((s,r)=>s+(parseFloat(r.area)||0),0);
+  const totalSc=a.reduce((s,r)=>s+(parseFloat(r.prod)||0),0);
+  const umis=a.map(r=>parseFloat(r.umi)).filter(x=>!isNaN(x));
+  const avgUmi=umis.length?umis.reduce((a,b)=>a+b)/umis.length:0;
+  const avgProd=totalArea>0?(totalSc/totalArea).toFixed(1):0;
+  document.getElementById('mv-col-area').innerHTML=totalArea.toFixed(1)+'<span class="mc-unit"> ha</span>';
+  document.getElementById('mv-col-prod').innerHTML=avgProd+'<span class="mc-unit"> sc/ha</span>';
+  document.getElementById('mv-col-umi').innerHTML=(avgUmi?avgUmi.toFixed(1):'—')+'<span class="mc-unit"> %</span>';
+  document.getElementById('mv-col-total').innerHTML=totalSc.toLocaleString('pt-BR')+'<span class="mc-unit"> sc</span>';
+}
+renderColheitas(); updateColMetrics();
+
+// EXCLUSÃO
+let _delKey='', _delId='', _delCb=null;
+function askDelete(key,id,cb){
+  _delKey=key; _delId=id; _delCb=cb;
+  openMod('mod-confirm');
+}
+function confirmDelete(){
+  DB.remove(_delKey,_delId);
+  if(_delCb)_delCb();
+  closeMod('mod-confirm');
+  toast('Registro excluído');
+}
+
+// RELATÓRIOS
+function renderRelatorios(){
+  document.getElementById('rel-talhoes').textContent=DB.getArr('talhoes').length;
+  document.getElementById('rel-aplic').textContent=DB.getArr('diario').length;
+  document.getElementById('rel-col').textContent=DB.getArr('colheitas').length;
+  document.getElementById('rel-pd').textContent=DB.getArr('pragas').length+DB.getArr('doencas').length;
+  const cols=DB.getArr('colheitas');
+  const cw=document.getElementById('chart-w'), cl=document.getElementById('chart-l');
+  const ce=document.getElementById('chart-empty');
+  cw.innerHTML=''; cl.innerHTML='';
+  if(!cols.length){cw.style.display='none';cl.style.display='none';ce.style.display='block';return;}
+  cw.style.display='flex'; cl.style.display='flex'; ce.style.display='none';
+  const mx=Math.max(...cols.map(c=>parseFloat(c.scha)||0))||1;
+  cols.slice(0,8).forEach(c=>{
+    const p=((parseFloat(c.scha)||0)/mx*100).toFixed(0);
+    cw.innerHTML+=`<div class="chart-c"><span class="cv">${c.scha||'—'}</span><div class="chart-b" style="height:${p}%"></div></div>`;
+    cl.innerHTML+=`<span class="cl">${c.talhao||'—'}</span>`;
+  });
+  const rw=document.getElementById('resumo-wrap');
+  const t=DB.getArr('talhoes'), d=DB.getArr('diario'), p=DB.getArr('pragas'), dc=DB.getArr('doencas'), co=DB.getArr('colheitas');
+  rw.innerHTML=`
+    <b>Talhões:</b> ${t.length} cadastrado(s) — ${t.map(x=>x.nome).join(', ')||'—'}<br>
+    <b>Aplicações no diário:</b> ${d.length} registros<br>
+    <b>Daninhas:</b> ${DB.getArr('daninhas').length} registradas<br>
+    <b>Pragas monitoradas:</b> ${p.length} — em nível de ação: ${p.filter(x=>x.nivel==='sim').length}<br>
+    <b>Doenças monitoradas:</b> ${dc.length} — severas/altas: ${dc.filter(x=>x.sev==='Alta'||x.sev==='Muito alta').length}<br>
+    <b>Colheitas:</b> ${co.length} registradas — área total: ${co.reduce((s,r)=>s+(parseFloat(r.area)||0),0).toFixed(1)} ha
+  `;
+}
+</script>
+</body>
+</html>
