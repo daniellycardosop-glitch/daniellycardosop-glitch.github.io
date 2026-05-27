@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgroField Pro — Gestão Agronômica</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── TEMA CLARO ── */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f0;
+  --bg-tertiary: #ededea;
+  --bg-page: #e8e8e4;
+  --text-primary: #1a1a18;
+  --text-secondary: #6b6b67;
+  --border: rgba(0,0,0,0.11);
+  --border-md: rgba(0,0,0,0.20);
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --green-dark: #3B6D11;
+  --green-mid: #639922;
+  --green-light: #EAF3DE;
+  --green-text: #27500A;
+  --amber-dark: #854F0B;
+  --amber-light: #FAEEDA;
+  --amber-border: #EF9F27;
+  --blue-dark: #185FA5;
+  --blue-light: #E6F1FB;
+  --blue-border: #378ADD;
+  --red-dark: #A32D2D;
+  --red-light: #FCEBEB;
+  --red-border: #E24B4A;
+  --purple-dark: #534AB7;
+  --purple-light: #EEEDFE;
+  --purple-border: #7F77DD;
+  --night-accent: #4a9eff;
+}
+
+/* ── TEMA NOTURNO ── */
+[data-theme="dark"] {
+  --bg-primary: #16181a;
+  --bg-secondary: #1f2226;
+  --bg-tertiary: #272b30;
+  --bg-page: #0f1113;
+  --text-primary: #e8eaed;
+  --text-secondary: #8b9099;
+  --border: rgba(255,255,255,0.08);
+  --border-md: rgba(255,255,255,0.16);
+  --green-dark: #5a9e2a;
+  --green-mid: #7ab83e;
+  --green-light: #1a2e0d;
+  --green-text: #a3d469;
+  --amber-dark: #c07820;
+  --amber-light: #2a1e08;
+  --amber-border: #c07820;
+  --blue-dark: #4a9eff;
+  --blue-light: #0d1e33;
+  --blue-border: #4a9eff;
+  --red-dark: #e06060;
+  --red-light: #2a0d0d;
+  --red-border: #e06060;
+  --purple-dark: #9b96e8;
+  --purple-light: #1a1840;
+  --purple-border: #9b96e8;
+}
+
+html { transition: background 0.3s, color 0.3s; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 16px;
+  transition: background 0.3s, color 0.3s;
+}
+.portal { max-width: 920px; margin: 0 auto; }
+
+/* ── HEADER ── */
+.header {
+  background: var(--bg-primary);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+.header-top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.25rem; flex-wrap: wrap; gap: 10px;
+  border-bottom: 0.5px solid var(--border);
+}
+.header-bottom {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 1.25rem; flex-wrap: wrap;
+  background: var(--bg-secondary);
+}
+.header-field { display: flex; align-items: center; gap: 7px; }
+.header-field i { font-size: 15px; color: var(--text-secondary); }
+.header-field-label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+.header-field-value { font-size: 13px; color: var(--text-primary); font-weight: 500; cursor: pointer; border-bottom: 1px dashed var(--border-md); }
+.header-field-value:hover { color: var(--green-dark); border-bottom-color: var(--green-mid); }
+.header-sep { width: 1px; height: 24px; background: var(--border); }
+
+.header-left { display: flex; align-items: center; gap: 12px; }
+.logo-icon {
+  width: 42px; height: 42px; border-radius: var(--radius-md);
+  background: var(--green-dark); display: flex; align-items: center;
+  justify-content: center; color: #C0DD97; font-size: 22px; flex-shrink: 0;
+}
+.logo-text h1 { font-size: 17px; font-weight: 600; color: var(--text-primary); }
+.logo-text p { font-size: 12px; color: var(--text-secondary); }
+.header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.header-badge {
+  font-size: 11px; padding: 4px 10px; border-radius: var(--radius-md);
+  background: var(--green-light); color: var(--green-dark);
+  border: 0.5px solid var(--green-mid); white-space: nowrap;
+}
+
+/* BOTÃO DARK MODE */
+.theme-btn {
+  width: 36px; height: 36px; border-radius: var(--radius-md);
+  border: 0.5px solid var(--border-md); background: var(--bg-secondary);
+  color: var(--text-secondary); cursor: pointer; display: flex;
+  align-items: center; justify-content: center; font-size: 18px;
+  transition: all 0.2s; flex-shrink: 0;
+}
+.theme-btn:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+[data-theme="dark"] .theme-btn { color: #f0c040; border-color: rgba(240,192,64,0.3); background: rgba(240,192,64,0.08); }
+
+/* MODAL FAZENDA */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55); z-index: 1000;
+  align-items: center; justify-content: center; padding: 16px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg-primary); border: 0.5px solid var(--border-md);
+  border-radius: var(--radius-lg); padding: 1.5rem; width: 100%; max-width: 440px;
+}
+.modal h2 { font-size: 15px; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+.modal h2 i { color: var(--green-mid); }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 1.25rem; }
+
+/* ── NAV ── */
+.nav { display: flex; gap: 5px; margin-bottom: 1rem; flex-wrap: wrap; }
+.nav-btn {
+  flex: 1; min-width: 72px; padding: 8px 5px;
+  border: 0.5px solid var(--border); border-radius: var(--radius-md);
+  background: var(--bg-primary); color: var(--text-secondary);
+  font-size: 11px; cursor: pointer; display: flex; flex-direction: column;
+  align-items: center; gap: 4px; transition: all 0.15s; font-family: inherit;
+}
+.nav-btn i { font-size: 19px; }
+.nav-btn.active { background: var(--green-light); color: var(--green-dark); border-color: var(--green-mid); font-weight: 600; }
+.nav-btn:hover:not(.active) { background: var(--bg-secondary); color: var(--text-primary); }
+[data-theme="dark"] .nav-btn.active { background: var(--green-light); color: var(--green-text); }
+
+/* ── SEÇÕES E CARDS ── */
+.section { display: none; }
+.section.active { display: block; }
+.card {
+  background: var(--bg-primary); border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 1rem;
+  transition: background 0.3s;
+}
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 8px; }
+.card-title { font-size: 14px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+.card-title i { font-size: 17px; color: var(--green-mid); }
+
+/* ── FORMULÁRIOS ── */
+.form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 10px; margin-bottom: 10px; }
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-group label { font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+.form-group input, .form-group select, .form-group textarea {
+  font-size: 13px; padding: 8px 10px;
+  border: 0.5px solid var(--border-md); border-radius: var(--radius-md);
+  background: var(--bg-secondary); color: var(--text-primary);
+  width: 100%; font-family: inherit; transition: border-color 0.15s, background 0.3s;
+}
+.form-group textarea { resize: vertical; min-height: 75px; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none; border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(99,153,34,0.12);
+}
+.form-group input[readonly] { background: var(--bg-tertiary); cursor: default; }
+.form-group select option { background: var(--bg-primary); color: var(--text-primary); }
+
+.radio-group { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 4px; }
+.radio-option { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; color: var(--text-primary); }
+.radio-option input { width: auto; accent-color: var(--green-dark); }
+
+.tag-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px; }
+.tag { font-size: 11px; padding: 4px 10px; border-radius: 99px; cursor: pointer; border: 0.5px solid; transition: all 0.15s; user-select: none; }
+.tag:hover { opacity: 0.8; }
+.tag.herbicida { background: var(--amber-light); color: var(--amber-dark); border-color: var(--amber-border); }
+.tag.fungicida { background: var(--blue-light); color: var(--blue-dark); border-color: var(--blue-border); }
+.tag.inseticida { background: var(--red-light); color: var(--red-dark); border-color: var(--red-border); }
+.tag.active-tag { opacity: 0.35; text-decoration: line-through; }
+
+/* ── BOTÕES ── */
+.btn {
+  padding: 8px 14px; border-radius: var(--radius-md); font-size: 13px;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  border: 0.5px solid; transition: all 0.15s; font-family: inherit; font-weight: 500;
+}
+.btn-primary { background: var(--green-dark); color: #d8f0b8; border-color: var(--green-dark); }
+.btn-primary:hover { background: var(--green-text); }
+.btn-secondary { background: var(--bg-secondary); color: var(--text-primary); border-color: var(--border-md); }
+.btn-secondary:hover { background: var(--bg-tertiary); }
+
+/* ── MÉTRICAS ── */
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+.metric-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 13px; transition: background 0.3s; }
+.metric-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 5px; }
+.metric-value { font-size: 20px; font-weight: 600; color: var(--text-primary); }
+.metric-unit { font-size: 11px; color: var(--text-secondary); font-weight: 400; }
+.metric-accent { color: var(--green-dark); }
+.metric-warn { color: var(--amber-dark); }
+
+/* ── LOG ITEMS ── */
+.log-list { display: flex; flex-direction: column; gap: 8px; }
+.log-item {
+  padding: 10px 12px; border-radius: var(--radius-md);
+  border: 0.5px solid var(--border); background: var(--bg-secondary);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.log-item-left { flex: 1; min-width: 0; }
+.log-item-type { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 99px; display: inline-block; margin-bottom: 5px; }
+.log-item-desc { font-size: 13px; color: var(--text-primary); word-break: break-word; }
+.log-item-meta { font-size: 11px; color: var(--text-secondary); margin-top: 3px; }
+.log-item-date { font-size: 11px; color: var(--text-secondary); white-space: nowrap; }
+
+/* ── CULTIVAR ── */
+.cultivar-box {
+  padding: 12px; border-radius: var(--radius-md);
+  border: 0.5px solid var(--border-md); background: var(--bg-secondary); margin-top: 10px;
+}
+.experimental-row { display: flex; align-items: center; justify-content: space-between; }
+.experimental-label { font-size: 13px; color: var(--text-primary); display: flex; align-items: center; gap: 8px; font-weight: 500; }
+.toggle { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--border-md); border-radius: 99px; cursor: pointer; transition: 0.2s;
+}
+.toggle-slider:before {
+  content: ''; position: absolute; width: 16px; height: 16px;
+  left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.2s;
+}
+.toggle input:checked + .toggle-slider { background: var(--green-dark); }
+.toggle input:checked + .toggle-slider:before { transform: translateX(18px); }
+.experimental-field { margin-top: 12px; display: none; }
+.experimental-field.show { display: block; }
+.exp-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--amber-light); color: var(--amber-dark);
+  border: 0.5px solid var(--amber-border); padding: 5px 11px;
+  border-radius: var(--radius-md); font-size: 12px; margin-bottom: 10px; font-weight: 500;
+}
+
+/* ── ABAS ── */
+.tab-row { display: flex; gap: 0; margin-bottom: 1rem; border-bottom: 1px solid var(--border); overflow-x: auto; }
+.tab { padding: 8px 14px; font-size: 13px; cursor: pointer; color: var(--text-secondary); border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.15s; }
+.tab.active-tab { color: var(--green-dark); border-bottom-color: var(--green-mid); font-weight: 600; }
+.tab:hover:not(.active-tab) { color: var(--text-primary); }
+.sub-section { display: none; }
+.sub-section.active { display: block; }
+
+/* ── PRAGAS / DOENÇAS ── */
+.pragas-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: 8px; }
+.praga-card { padding: 10px 12px; border-radius: var(--radius-md); border: 0.5px solid var(--border); background: var(--bg-secondary); }
+.praga-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+.praga-sci { font-size: 11px; color: var(--text-secondary); font-style: italic; }
+.praga-level { font-size: 11px; margin-top: 5px; }
+.nivel-alto { color: var(--red-dark); }
+.nivel-medio { color: var(--amber-dark); }
+.nivel-baixo { color: var(--green-dark); }
+
+/* ── UMIDADE ── */
+.umidade-bar { height: 10px; background: var(--bg-tertiary); border-radius: 99px; overflow: hidden; margin: 6px 0; }
+.umidade-fill { height: 100%; border-radius: 99px; transition: width 0.4s, background 0.4s; }
+.umidade-status { font-size: 12px; margin-top: 6px; }
+
+/* ── SAFRA SELECTOR ── */
+.safra-selector { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
+.safra-btn { padding: 6px 14px; border-radius: 99px; font-size: 12px; border: 0.5px solid; cursor: pointer; transition: all 0.15s; font-family: inherit; font-weight: 500; }
+.safra-soja { background: var(--green-light); color: var(--green-dark); border-color: var(--green-mid); }
+.safra-milho { background: var(--amber-light); color: var(--amber-dark); border-color: var(--amber-border); }
+.safra-btn.inactive { opacity: 0.35; }
+
+/* ── GRÁFICO ── */
+.chart-wrap { display: flex; align-items: flex-end; gap: 6px; height: 130px; margin-bottom: 6px; }
+.chart-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 3px; }
+.chart-bar { width: 100%; background: var(--green-mid); border-radius: 3px 3px 0 0; min-height: 6px; }
+.chart-val { font-size: 10px; color: var(--text-secondary); }
+.chart-labels { display: flex; gap: 6px; }
+.chart-lbl { flex: 1; font-size: 10px; color: var(--text-secondary); text-align: center; }
+
+/* ── DIVIDER ── */
+.divider { height: 1px; background: var(--border); margin: 1rem 0; }
+
+/* ── NOTIFICAÇÃO ── */
+.notify {
+  display: none; position: fixed; bottom: 24px; right: 24px;
+  background: var(--green-dark); color: #d8f0b8;
+  padding: 11px 18px; border-radius: var(--radius-md);
+  font-size: 13px; align-items: center; gap: 8px;
+  z-index: 9999; font-family: inherit;
+}
+.notify.show { display: flex; }
+
+/* ── NOTURNO: estrelas no fundo ── */
+[data-theme="dark"] body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.10) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 20%, rgba(255,255,255,0.12) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.08) 0%, transparent 100%);
+  z-index: 0;
+}
+[data-theme="dark"] .portal { position: relative; z-index: 1; }
+
+/* ── NOTURNO BADGE ── */
+.night-badge {
+  display: none; font-size: 11px; padding: 3px 8px; border-radius: 99px;
+  background: rgba(74,158,255,0.12); color: var(--blue-dark);
+  border: 0.5px solid rgba(74,158,255,0.25); align-items: center; gap: 5px;
+}
+[data-theme="dark"] .night-badge { display: inline-flex; }
+
+@media (max-width: 540px) {
+  body { padding: 8px; }
+  .form-row { grid-template-columns: 1fr; }
+  .header-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+</style>
+</head>
+<body>
+<div class="portal">
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="header">
+    <div class="header-top">
+      <div class="header-left">
+        <div class="logo-icon"><i class="ti ti-plant-2"></i></div>
+        <div class="logo-text">
+          <h1>AgroField Pro</h1>
+          <p>Sistema de Gestão Agronômica</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span class="night-badge"><i class="ti ti-moon-stars" style="font-size:12px"></i>Modo noturno</span>
+        <span class="header-badge"><i class="ti ti-microscope" style="font-size:12px;vertical-align:-1px"></i> Eng. Agrônomo</span>
+        <button class="theme-btn" onclick="toggleTheme()" title="Alternar modo noturno" id="theme-btn">
+          <i class="ti ti-moon" id="theme-icon"></i>
+        </button>
+        <button class="btn btn-secondary" onclick="openFazendaModal()" style="padding:6px 11px;font-size:12px">
+          <i class="ti ti-settings"></i>Fazenda
+        </button>
+      </div>
+    </div>
+    <div class="header-bottom">
+      <div class="header-field">
+        <i class="ti ti-map-pin"></i>
+        <div>
+          <div class="header-field-label">Fazenda</div>
+          <div class="header-field-value" id="display-fazenda" onclick="openFazendaModal()">Clique para configurar</div>
+        </div>
+      </div>
+      <div class="header-sep"></div>
+      <div class="header-field">
+        <i class="ti ti-user"></i>
+        <div>
+          <div class="header-field-label">Proprietário</div>
+          <div class="header-field-value" id="display-proprietario" onclick="openFazendaModal()">—</div>
+        </div>
+      </div>
+      <div class="header-sep"></div>
+      <div class="header-field">
+        <i class="ti ti-calendar"></i>
+        <div>
+          <div class="header-field-label">Safra</div>
+          <div style="font-size:13px;color:var(--text-primary);font-weight:500">2025/26</div>
+        </div>
+      </div>
+      <div class="header-sep"></div>
+      <div class="header-field">
+        <i class="ti ti-map-2"></i>
+        <div>
+          <div class="header-field-label">Município / UF</div>
+          <div class="header-field-value" id="display-municipio" onclick="openFazendaModal()">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="safra-selector">
+    <button class="safra-btn safra-soja" onclick="toggleSafra(this)"><i class="ti ti-circle-filled" style="font-size:8px;vertical-align:1px"></i> Soja — Safra</button>
+    <button class="safra-btn safra-milho" onclick="toggleSafra(this)"><i class="ti ti-circle-filled" style="font-size:8px;vertical-align:1px"></i> Milho — Safrinha</button>
+  </div>
+
+  <!-- ═══ NAVEGAÇÃO ═══ -->
+  <div class="nav">
+    <button class="nav-btn active" onclick="showSection('plantacao',this)"><i class="ti ti-seeding"></i>Plantação</button>
+    <button class="nav-btn" onclick="showSection('diario',this)"><i class="ti ti-notebook"></i>Diário</button>
+    <button class="nav-btn" onclick="showSection('pragas',this)"><i class="ti ti-bug"></i>Pragas</button>
+    <button class="nav-btn" onclick="showSection('doencas',this)"><i class="ti ti-virus"></i>Doenças</button>
+    <button class="nav-btn" onclick="showSection('colheita',this)"><i class="ti ti-tractor"></i>Colheita</button>
+    <button class="nav-btn" onclick="showSection('relatorios',this)"><i class="ti ti-chart-bar"></i>Relatórios</button>
+  </div>
+
+  <!-- ═══ PLANTAÇÃO ═══ -->
+  <div id="sec-plantacao" class="section active">
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-label">Área total</div><div class="metric-value metric-accent">1.240 <span class="metric-unit">ha</span></div></div>
+      <div class="metric-card"><div class="metric-label">Talhões ativos</div><div class="metric-value">14</div></div>
+      <div class="metric-card"><div class="metric-label">Estádio médio</div><div class="metric-value metric-accent">V6</div></div>
+      <div class="metric-card"><div class="metric-label">Próx. aplicação</div><div class="metric-value metric-warn">3 dias</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title"><i class="ti ti-map-2"></i>Registro de talhão</span>
+        <button class="btn btn-primary" onclick="saveTalhao()"><i class="ti ti-device-floppy"></i>Salvar talhão</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nome / código do talhão</label>
+          <input type="text" id="talhao-nome" placeholder="Ex: T-07 Norte">
+        </div>
+        <div class="form-group">
+          <label>Área (ha)</label>
+          <input type="number" id="talhao-area" placeholder="0.0" step="0.1">
+        </div>
+        <div class="form-group">
+          <label>Cultura</label>
+          <select id="talhao-cultura">
+            <option value="">Selecionar...</option>
+            <option>Soja — Safra</option>
+            <option>Milho — Safrinha</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Data de plantio</label>
+          <input type="date" id="talhao-data">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Estádio fenológico atual</label>
+          <select id="talhao-estadio">
+            <option value="">Selecionar...</option>
+            <optgroup label="Vegetativo">
+              <option>VE — Emergência</option><option>V1</option><option>V2</option><option>V3</option>
+              <option>V4</option><option>V5</option><option>V6</option><option>V7</option><option>V8</option>
+            </optgroup>
+            <optgroup label="Reprodutivo">
+              <option>R1 — Floração</option><option>R2</option><option>R3 — Início enchimento</option>
+              <option>R4</option><option>R5 — Enchimento grão</option><option>R6</option>
+              <option>R7 — Maturação</option><option>R8</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Espaçamento (cm)</label>
+          <input type="number" id="talhao-espac" placeholder="Ex: 45">
+        </div>
+        <div class="form-group">
+          <label>Pop. plantas (pl/ha)</label>
+          <input type="number" id="talhao-pop" placeholder="Ex: 320000">
+        </div>
+      </div>
+      <div class="cultivar-box">
+        <div class="experimental-row">
+          <div class="experimental-label"><i class="ti ti-flask" style="color:var(--amber-dark)"></i>Cultivar experimental</div>
+          <label class="toggle"><input type="checkbox" id="toggle-exp" onchange="toggleExperimental()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="experimental-field" id="exp-field">
+          <div class="exp-badge"><i class="ti ti-flask"></i>Cultivar em teste / ensaio</div>
+          <div class="form-row" style="margin-bottom:0">
+            <div class="form-group"><label>Identificação da cultivar experimental</label><input type="text" id="cultivar-exp-nome" placeholder="Ex: BRS 562 — Ensaio A3"></div>
+            <div class="form-group"><label>Instituição / empresa responsável</label><input type="text" id="cultivar-exp-inst" placeholder="Ex: Embrapa Soja"></div>
+            <div class="form-group"><label>Nº do ensaio / protocolo</label><input type="text" id="cultivar-exp-prot" placeholder="Ex: ENS-2025-047"></div>
+          </div>
+        </div>
+        <div style="margin-top:12px" id="cultivar-std-row">
+          <div class="form-row" style="margin-bottom:0">
+            <div class="form-group"><label>Cultivar comercial</label><input type="text" id="cultivar-nome" placeholder="Ex: TMGB 1180 IPRO"></div>
+            <div class="form-group">
+              <label>Tecnologia / traço</label>
+              <select id="cultivar-tech">
+                <option value="">Selecionar...</option>
+                <option>Convencional</option><option>Roundup Ready (RR)</option><option>IPRO</option>
+                <option>ENLIST</option><option>Viptera</option><option>Herculex</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ DIÁRIO DE BORDO ═══ -->
+  <div id="sec-diario" class="section">
+    <div class="tab-row">
+      <div class="tab active-tab" onclick="showTab('aplicacoes',this)">Aplicações</div>
+      <div class="tab" onclick="showTab('herbicidas',this)">Daninhas</div>
+    </div>
+
+    <div id="tab-aplicacoes" class="sub-section active">
+      <div class="card">
+        <div class="card-header"><span class="card-title"><i class="ti ti-droplet"></i>Nova entrada no diário</span></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Talhão(ões)</label>
+            <select id="diario-talhao">
+              <option value="">Selecionar...</option>
+              <option>T-01 Sul (82 ha)</option><option>T-02 Norte (95 ha)</option>
+              <option>T-03 Central (110 ha)</option><option>T-04 Leste (78 ha)</option>
+              <option>Todos os talhões</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Data da aplicação</label><input type="date" id="diario-data"></div>
+          <div class="form-group">
+            <label>Tipo de manejo</label>
+            <select id="diario-tipo">
+              <option value="">Selecionar...</option>
+              <option value="herbicida">Herbicida</option>
+              <option value="fungicida">Fungicida</option>
+              <option value="inseticida">Inseticida</option>
+              <option value="fertilizante">Fertilizante foliar</option>
+              <option value="regulador">Regulador de crescimento</option>
+              <option value="inoculante">Inoculante</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="grid-column:span 2">
+            <label>Produto(s) e dose(s)</label>
+            <input type="text" id="diario-produto" placeholder="Ex: Glifosato 480 — 2,0 L/ha + Cercobin 700 WP — 1,0 kg/ha">
+          </div>
+          <div class="form-group"><label>Vol. calda (L/ha)</label><input type="number" id="diario-volume" placeholder="Ex: 120"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Estádio na aplicação</label>
+            <select id="diario-estadio">
+              <option value="">Selecionar...</option>
+              <option>VE</option><option>V1</option><option>V2</option><option>V3</option><option>V4</option>
+              <option>V5</option><option>V6</option><option>R1</option><option>R2</option><option>R3</option><option>R4</option><option>R5</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Temp. (°C) / UR (%)</label><input type="text" id="diario-clima" placeholder="Ex: 28°C / 65%"></div>
+          <div class="form-group"><label>Vel. vento (km/h)</label><input type="number" id="diario-vento" placeholder="Ex: 8"></div>
+        </div>
+        <div class="form-group" style="margin-bottom:12px">
+          <label>Observações técnicas</label>
+          <textarea id="diario-obs" placeholder="Condições de campo, uniformidade de distribuição, sintomas observados, recomendações técnicas..."></textarea>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px">
+          <button class="btn btn-secondary" onclick="clearDiario()"><i class="ti ti-x"></i>Limpar</button>
+          <button class="btn btn-primary" onclick="saveDiario()"><i class="ti ti-plus"></i>Adicionar ao diário</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title"><i class="ti ti-list"></i>Registros recentes</span>
+          <span style="font-size:11px;color:var(--text-secondary)" id="log-count">3 entradas</span>
+        </div>
+        <div class="log-list" id="log-list">
+          <div class="log-item">
+            <div class="log-item-left">
+              <span class="log-item-type" style="background:var(--amber-light);color:var(--amber-dark)">Herbicida</span>
+              <div class="log-item-desc">Glifosato 480 — 2,5 L/ha + Diclosulam 840 WG — 30 g/ha</div>
+              <div class="log-item-meta">T-01 Sul · V3 · 120 L/ha calda · 26°C / 60% UR · 6 km/h</div>
+            </div>
+            <div class="log-item-date">12/01/2026</div>
+          </div>
+          <div class="log-item">
+            <div class="log-item-left">
+              <span class="log-item-type" style="background:var(--blue-light);color:var(--blue-dark)">Fungicida</span>
+              <div class="log-item-desc">Orkestra SC — 0,3 L/ha + Sphere Max — 0,2 L/ha</div>
+              <div class="log-item-meta">T-02 Norte · R1 · 100 L/ha calda · 29°C / 72% UR · 10 km/h</div>
+            </div>
+            <div class="log-item-date">28/01/2026</div>
+          </div>
+          <div class="log-item">
+            <div class="log-item-left">
+              <span class="log-item-type" style="background:var(--red-light);color:var(--red-dark)">Inseticida</span>
+              <div class="log-item-desc">Engeo Pleno — 0,2 L/ha (Lagarta-do-cartucho — nível de ação atingido)</div>
+              <div class="log-item-meta">T-03 Central · V6 · 100 L/ha calda · 27°C / 68% UR · 8 km/h</div>
+            </div>
+            <div class="log-item-date">05/02/2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-herbicidas" class="sub-section">
+      <div class="card">
+        <div class="card-header"><span class="card-title"><i class="ti ti-leaf"></i>Controle de plantas daninhas</span></div>
+        <div class="form-row">
+          <div class="form-group"><label>Daninha identificada</label><input type="text" placeholder="Ex: Corda-de-viola (Ipomoea sp.)"></div>
+          <div class="form-group">
+            <label>Talhão</label>
+            <select><option value="">Selecionar...</option><option>T-01 Sul</option><option>T-02 Norte</option><option>T-03 Central</option></select>
+          </div>
+          <div class="form-group"><label>Densidade (pl/m²)</label><input type="number" placeholder="Ex: 3" step="0.1"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Estádio da daninha</label>
+            <select><option>Plântula (2–4 folhas)</option><option>Jovem (4–6 folhas)</option><option>Adulta</option><option>Floração</option></select>
+          </div>
+          <div class="form-group"><label>Data de observação</label><input type="date"></div>
+        </div>
+        <div class="form-group" style="margin-bottom:12px">
+          <label>Suspeita de resistência (mecanismo de ação)</label>
+          <div class="tag-group">
+            <span class="tag herbicida" onclick="this.classList.toggle('active-tag')">Grupo 9 (EPSP)</span>
+            <span class="tag herbicida" onclick="this.classList.toggle('active-tag')">Grupo 2 (ALS)</span>
+            <span class="tag herbicida" onclick="this.classList.toggle('active-tag')">Grupo 27 (HPPD)</span>
+            <span class="tag herbicida" onclick="this.classList.toggle('active-tag')">Grupo 5 (Triazinas)</span>
+            <span class="tag herbicida" onclick="this.classList.toggle('active-tag')">Inibidores ACCase</span>
+            <span class="tag herbicida" onclick="this.classList.toggle('active-tag')">Sem suspeita</span>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:12px">
+          <label>Observações</label>
+          <textarea placeholder="Distribuição no talhão, histórico de controle, recomendação de manejo..."></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="showNotify('Daninha registrada!')"><i class="ti ti-device-floppy"></i>Registrar daninha</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PRAGAS ═══ -->
+  <div id="sec-pragas" class="section">
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-label">Pragas monitoradas</div><div class="metric-value">6</div></div>
+      <div class="metric-card"><div class="metric-label">Em nível de ação</div><div class="metric-value metric-warn">2</div></div>
+      <div class="metric-card"><div class="metric-label">Talhões com ocorrência</div><div class="metric-value metric-warn">4</div></div>
+      <div class="metric-card"><div class="metric-label">Predadores observados</div><div class="metric-value metric-accent">3</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title"><i class="ti ti-bug"></i>Registrar ocorrência de praga</span></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Praga identificada</label>
+          <select>
+            <option value="">Selecionar...</option>
+            <option>Lagarta-do-cartucho (S. frugiperda)</option>
+            <option>Lagarta-falsa-medideira (C. includens)</option>
+            <option>Percevejo-marrom (E. heros)</option>
+            <option>Percevejo-verde (N. viridula)</option>
+            <option>Mosca-branca (B. tabaci)</option>
+            <option>Pulgão (A. glycines)</option>
+            <option>Trips (F. schultzei)</option>
+            <option>Cigarrinha-das-pastagens</option>
+            <option>Spodoptera cosmioides</option>
+            <option>Helicoverpa armigera</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Talhão</label>
+          <select><option value="">Selecionar...</option><option>T-01 Sul</option><option>T-02 Norte</option><option>T-03 Central</option><option>T-04 Leste</option></select>
+        </div>
+        <div class="form-group"><label>Data de observação</label><input type="date"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Método de amostragem</label>
+          <select>
+            <option>Pano-de-batida</option><option>Armadilha feromônio</option>
+            <option>Varredura (rede entomológica)</option><option>Observação visual direta</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Infestação (insetos/m ou %)</label><input type="text" placeholder="Ex: 2,3 insetos/m"></div>
+        <div class="form-group">
+          <label>Estádio na observação</label>
+          <select><option value="">Selecionar...</option><option>V4</option><option>V5</option><option>V6</option><option>R1</option><option>R2</option><option>R3</option></select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Nível de ação atingido?</label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="nivel-acao" value="sim"><span>Sim — controle necessário</span></label>
+          <label class="radio-option"><input type="radio" name="nivel-acao" value="nao" checked><span>Não — monitorar</span></label>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label>Observações técnicas</label>
+        <textarea placeholder="Distribuição no talhão, predadores naturais observados, recomendação de manejo integrado..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="showNotify('Praga registrada com sucesso!')"><i class="ti ti-device-floppy"></i>Registrar praga</button>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title"><i class="ti ti-list-check"></i>Status atual — monitoramento de pragas</span></div>
+      <div class="pragas-grid">
+        <div class="praga-card">
+          <div class="praga-name">Lagarta-do-cartucho</div>
+          <div class="praga-sci">Spodoptera frugiperda</div>
+          <div class="praga-level nivel-alto">● Nível de ação atingido — T-03</div>
+        </div>
+        <div class="praga-card">
+          <div class="praga-name">Percevejo-marrom</div>
+          <div class="praga-sci">Euschistus heros</div>
+          <div class="praga-level nivel-medio">● Monitorar — T-01, T-02</div>
+        </div>
+        <div class="praga-card">
+          <div class="praga-name">Mosca-branca</div>
+          <div class="praga-sci">Bemisia tabaci</div>
+          <div class="praga-level nivel-baixo">● Abaixo do limite</div>
+        </div>
+        <div class="praga-card">
+          <div class="praga-name">Falsa-medideira</div>
+          <div class="praga-sci">Chrysodeixis includens</div>
+          <div class="praga-level nivel-baixo">● Abaixo do limite</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ DOENÇAS ═══ -->
+  <div id="sec-doencas" class="section">
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-label">Doenças monitoradas</div><div class="metric-value">5</div></div>
+      <div class="metric-card"><div class="metric-label">Em nível de controle</div><div class="metric-value metric-warn">2</div></div>
+      <div class="metric-card"><div class="metric-label">Fungicidas aplicados</div><div class="metric-value">3</div></div>
+      <div class="metric-card"><div class="metric-label">Talhões afetados</div><div class="metric-value metric-warn">3</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title"><i class="ti ti-virus"></i>Registrar ocorrência de doença</span></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Doença identificada</label>
+          <select>
+            <option value="">Selecionar...</option>
+            <optgroup label="Soja">
+              <option>Ferrugem asiática (P. pachyrhizi)</option>
+              <option>Mancha alvo (C. kikuchii)</option>
+              <option>Antracnose (C. truncatum)</option>
+              <option>Mofo branco (S. sclerotiorum)</option>
+              <option>Cancro da haste (D. phaseolorum)</option>
+              <option>Doenças de final de ciclo (DFC)</option>
+              <option>Míldio (P. manshurica)</option>
+              <option>Nematoides de cisto</option>
+            </optgroup>
+            <optgroup label="Milho">
+              <option>Helmintosporiose (E. turcicum)</option>
+              <option>Ferrugem polissora (P. polysora)</option>
+              <option>Ferrugem branca (P. sorghi)</option>
+              <option>Mancha de Turcicum</option>
+              <option>Diplodia (S. maydis)</option>
+              <option>Grãos ardidos</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Talhão</label>
+          <select><option value="">Selecionar...</option><option>T-01 Sul</option><option>T-02 Norte</option><option>T-03 Central</option><option>T-04 Leste</option></select>
+        </div>
+        <div class="form-group"><label>Data de observação</label><input type="date"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Incidência (%)</label><input type="number" placeholder="Ex: 15" min="0" max="100"></div>
+        <div class="form-group">
+          <label>Severidade</label>
+          <select><option>Baixa (traço)</option><option>Moderada</option><option>Alta</option><option>Muito alta</option></select>
+        </div>
+        <div class="form-group">
+          <label>Estádio na observação</label>
+          <select><option value="">Selecionar...</option><option>V5</option><option>V6</option><option>R1</option><option>R2</option><option>R3</option><option>R4</option><option>R5</option></select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>Condições climáticas favoráveis</label>
+        <div class="tag-group">
+          <span class="tag fungicida" onclick="this.classList.toggle('active-tag')">Alta UR (>80%)</span>
+          <span class="tag fungicida" onclick="this.classList.toggle('active-tag')">Temp. 18–28°C</span>
+          <span class="tag fungicida" onclick="this.classList.toggle('active-tag')">Chuva frequente</span>
+          <span class="tag fungicida" onclick="this.classList.toggle('active-tag')">Orvalho prolongado</span>
+          <span class="tag fungicida" onclick="this.classList.toggle('active-tag')">Baixa radiação solar</span>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label>Notas técnicas</label>
+        <textarea placeholder="Distribuição no talhão, estrato afetado, histórico, recomendação de fungicida/grupo químico..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="showNotify('Doença registrada com sucesso!')"><i class="ti ti-device-floppy"></i>Registrar ocorrência</button>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title"><i class="ti ti-list-check"></i>Status atual — monitoramento de doenças</span></div>
+      <div class="pragas-grid">
+        <div class="praga-card">
+          <div class="praga-name">Ferrugem asiática</div>
+          <div class="praga-sci">Phakopsora pachyrhizi</div>
+          <div class="praga-level nivel-alto">● Nível de controle — T-02</div>
+        </div>
+        <div class="praga-card">
+          <div class="praga-name">Mofo branco</div>
+          <div class="praga-sci">Sclerotinia sclerotiorum</div>
+          <div class="praga-level nivel-medio">● Incipiente — T-04</div>
+        </div>
+        <div class="praga-card">
+          <div class="praga-name">Mancha alvo</div>
+          <div class="praga-sci">Corynespora cassiicola</div>
+          <div class="praga-level nivel-medio">● Monitorar — T-01</div>
+        </div>
+        <div class="praga-card">
+          <div class="praga-name">Antracnose</div>
+          <div class="praga-sci">Colletotrichum truncatum</div>
+          <div class="praga-level nivel-baixo">● Abaixo do limite</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ COLHEITA ═══ -->
+  <div id="sec-colheita" class="section">
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-label">Área colhida</div><div class="metric-value metric-accent">680 <span class="metric-unit">ha</span></div></div>
+      <div class="metric-card"><div class="metric-label">Produt. média</div><div class="metric-value metric-accent">62,4 <span class="metric-unit">sc/ha</span></div></div>
+      <div class="metric-card"><div class="metric-label">Umidade média</div><div class="metric-value metric-warn">14,8 <span class="metric-unit">%</span></div></div>
+      <div class="metric-card"><div class="metric-label">Total colhido</div><div class="metric-value">42.432 <span class="metric-unit">sc</span></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title"><i class="ti ti-tractor"></i>Registro de colheita</span></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Talhão</label>
+          <select id="col-talhao">
+            <option value="">Selecionar...</option>
+            <option>T-01 Sul (82 ha)</option><option>T-02 Norte (95 ha)</option>
+            <option>T-03 Central (110 ha)</option><option>T-04 Leste (78 ha)</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Data da colheita</label><input type="date" id="col-data"></div>
+        <div class="form-group"><label>Área efetivamente colhida (ha)</label><input type="number" id="col-area" placeholder="Ex: 82" step="0.1" oninput="calcProduction()"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Produção total (sacas de 60 kg)</label><input type="number" id="col-producao" placeholder="Ex: 5330" oninput="calcProduction()"></div>
+        <div class="form-group"><label>Produtividade calculada (sc/ha)</label><input type="text" id="col-prodha" placeholder="—" readonly></div>
+        <div class="form-group"><label>Produtividade (kg/ha)</label><input type="text" id="col-kgha" placeholder="—" readonly></div>
+      </div>
+      <div class="divider"></div>
+      <div style="font-size:13px;font-weight:600;color:var(--text-primary);display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <i class="ti ti-droplet-half-2" style="color:var(--green-mid)"></i>Teor de umidade dos grãos — pré-colheita
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Medição 1 (%)</label><input type="number" id="umi-1" placeholder="Ex: 16,2" step="0.1" oninput="calcUmidade()"></div>
+        <div class="form-group"><label>Medição 2 (%)</label><input type="number" id="umi-2" placeholder="Ex: 15,8" step="0.1" oninput="calcUmidade()"></div>
+        <div class="form-group"><label>Medição 3 (%)</label><input type="number" id="umi-3" placeholder="Ex: 15,4" step="0.1" oninput="calcUmidade()"></div>
+      </div>
+      <div style="background:var(--bg-secondary);border-radius:var(--radius-md);padding:12px;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-size:12px;color:var(--text-secondary)">Umidade média medida</span>
+          <span style="font-size:20px;font-weight:600" id="umi-media">—</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);margin-top:4px">
+          <span>0%</span><span>Padrão comercial: 13%</span><span>30%</span>
+        </div>
+        <div class="umidade-bar"><div class="umidade-fill" id="umi-fill" style="width:0%;background:var(--green-mid)"></div></div>
+        <div class="umidade-status" id="umi-status"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Equipamento de medição</label><input type="text" placeholder="Ex: Dicky Bill, Gehaka G800"></div>
+        <div class="form-group"><label>Horário da colheita</label><input type="time" id="col-hora"></div>
+        <div class="form-group"><label>Perdas estimadas (%)</label><input type="number" placeholder="Ex: 1,2" step="0.1"></div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label>Observações técnicas da colheita</label>
+        <textarea placeholder="Condições de trilha, regulagem da colhedora, impurezas observadas, dificuldades encontradas..."></textarea>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button class="btn btn-secondary" onclick="clearColheita()"><i class="ti ti-x"></i>Limpar</button>
+        <button class="btn btn-primary" onclick="saveColheita()"><i class="ti ti-device-floppy"></i>Registrar colheita</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title"><i class="ti ti-list"></i>Histórico de colheitas</span></div>
+      <div class="log-list" id="col-list">
+        <div class="log-item">
+          <div class="log-item-left">
+            <span class="log-item-type" style="background:var(--green-light);color:var(--green-dark)">Soja — T-01 Sul</span>
+            <div class="log-item-desc">62,4 sc/ha · 82 ha · 5.117 sc · 3.744 kg/ha</div>
+            <div class="log-item-meta">Umidade: 14,1% média (3 medições) · Perdas: 0,8%</div>
+          </div>
+          <div class="log-item-date">18/03/2026</div>
+        </div>
+        <div class="log-item">
+          <div class="log-item-left">
+            <span class="log-item-type" style="background:var(--amber-light);color:var(--amber-dark)">Milho — T-05 Oeste</span>
+            <div class="log-item-desc">148,2 sc/ha · 95 ha · 14.079 sc · 8.892 kg/ha</div>
+            <div class="log-item-meta">Umidade: 18,3% média (3 medições) · Perdas: 1,2%</div>
+          </div>
+          <div class="log-item-date">22/07/2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ RELATÓRIOS ═══ -->
+  <div id="sec-relatorios" class="section">
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-label">Aplicações safra</div><div class="metric-value">27</div></div>
+      <div class="metric-card"><div class="metric-label">Custo insumos/ha</div><div class="metric-value metric-warn">R$ 1.840</div></div>
+      <div class="metric-card"><div class="metric-label">Eficiência controle</div><div class="metric-value metric-accent">87%</div></div>
+      <div class="metric-card"><div class="metric-label">Talhões colhidos</div><div class="metric-value">7/14</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title"><i class="ti ti-chart-bar"></i>Gerar relatório técnico</span></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tipo de relatório</label>
+          <select>
+            <option>Diário de aplicações — safra completa</option>
+            <option>Produtividade por talhão</option>
+            <option>Histórico de pragas</option>
+            <option>Histórico de doenças</option>
+            <option>Comparativo de cultivares</option>
+            <option>Relatório de cultivares experimentais</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Período</label>
+          <select>
+            <option>Safra atual (2025/26)</option><option>Safrinha atual (2026)</option>
+            <option>Safra anterior (2024/25)</option><option>Personalizado</option>
+          </select>
+        </div>
+        <div class="form-group" style="justify-content:flex-end">
+          <label>&nbsp;</label>
+          <button class="btn btn-primary" style="width:100%" onclick="showNotify('Relatório gerado!')">
+            <i class="ti ti-download"></i>Exportar relatório
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title"><i class="ti ti-chart-line"></i>Produtividade — Soja Safra 2025/26</span></div>
+      <div class="chart-wrap" id="chart-bars"></div>
+      <div class="chart-labels" id="chart-labels"></div>
+    </div>
+  </div>
+
+</div><!-- /portal -->
+
+<!-- ═══ MODAL FAZENDA ═══ -->
+<div class="modal-overlay" id="modal-fazenda">
+  <div class="modal">
+    <h2><i class="ti ti-map-pin"></i>Dados da fazenda</h2>
+    <div class="form-row" style="margin-bottom:10px">
+      <div class="form-group" style="grid-column:span 2">
+        <label>Nome da fazenda</label>
+        <input type="text" id="inp-fazenda" placeholder="Ex: Fazenda Santa Fé">
+      </div>
+    </div>
+    <div class="form-row" style="margin-bottom:10px">
+      <div class="form-group" style="grid-column:span 2">
+        <label>Proprietário / empresa</label>
+        <input type="text" id="inp-proprietario" placeholder="Ex: João Carlos Mendonça">
+      </div>
+    </div>
+    <div class="form-row" style="margin-bottom:10px">
+      <div class="form-group">
+        <label>Município</label>
+        <input type="text" id="inp-municipio" placeholder="Ex: Sorriso">
+      </div>
+      <div class="form-group">
+        <label>Estado (UF)</label>
+        <select id="inp-uf">
+          <option value="">Selecionar...</option>
+          <option>MT</option><option>MS</option><option>PR</option><option>GO</option><option>MG</option>
+          <option>SP</option><option>RS</option><option>SC</option><option>BA</option><option>TO</option>
+          <option>MA</option><option>PI</option><option>RO</option><option>PA</option><option>AM</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row" style="margin-bottom:0">
+      <div class="form-group">
+        <label>Área total da fazenda (ha)</label>
+        <input type="number" id="inp-area-total" placeholder="Ex: 1.240">
+      </div>
+      <div class="form-group">
+        <label>Responsável técnico (agrônomo)</label>
+        <input type="text" id="inp-agronomo" placeholder="Ex: Dr. Carlos Silveira">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()"><i class="ti ti-x"></i>Cancelar</button>
+      <button class="btn btn-primary" onclick="saveFazenda()"><i class="ti ti-device-floppy"></i>Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICAÇÃO -->
+<div class="notify" id="notify"><i class="ti ti-check"></i><span id="notify-msg"></span></div>
+
+<script>
+  // ── GRÁFICO ──
+  const chartData = [
+    {t:'T-01 Sul',v:62.4},{t:'T-02 Norte',v:58.1},{t:'T-03 Central',v:66.9},
+    {t:'T-04 Leste',v:54.2},{t:'T-05 Oeste',v:70.3},{t:'T-06',v:60.8}
+  ];
+  const maxV = Math.max(...chartData.map(d=>d.v));
+  const bc = document.getElementById('chart-bars');
+  const lc = document.getElementById('chart-labels');
+  chartData.forEach(d=>{
+    const pct = ((d.v/maxV)*100).toFixed(0);
+    bc.innerHTML += `<div class="chart-bar-col"><span class="chart-val">${d.v}</span><div class="chart-bar" style="height:${pct}%"></div></div>`;
+    lc.innerHTML += `<div class="chart-lbl">${d.t}</div>`;
+  });
+
+  // ── MODO NOTURNO ──
+  function toggleTheme(){
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme')==='dark';
+    html.setAttribute('data-theme', isDark?'light':'dark');
+    document.getElementById('theme-icon').className = isDark ? 'ti ti-moon' : 'ti ti-sun';
+    localStorage.setItem('agroTheme', isDark?'light':'dark');
+  }
+  (function initTheme(){
+    const saved = localStorage.getItem('agroTheme');
+    if(saved==='dark'){
+      document.documentElement.setAttribute('data-theme','dark');
+      document.getElementById('theme-icon').className='ti ti-sun';
+    }
+  })();
+
+  // ── MODAL FAZENDA ──
+  function openFazendaModal(){ document.getElementById('modal-fazenda').classList.add('open'); }
+  function closeModal(){ document.getElementById('modal-fazenda').classList.remove('open'); }
+  document.getElementById('modal-fazenda').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
+
+  function saveFazenda(){
+    const faz = document.getElementById('inp-fazenda').value.trim();
+    const prop = document.getElementById('inp-proprietario').value.trim();
+    const mun = document.getElementById('inp-municipio').value.trim();
+    const uf = document.getElementById('inp-uf').value;
+    const agro = document.getElementById('inp-agronomo').value.trim();
+    document.getElementById('display-fazenda').textContent = faz || 'Não informado';
+    document.getElementById('display-proprietario').textContent = prop || '—';
+    document.getElementById('display-municipio').textContent = (mun&&uf) ? mun+' / '+uf : mun||uf||'—';
+    document.title = (faz?faz+' — ':'')+'AgroField Pro';
+    if(agro) document.querySelector('.header-badge').innerHTML = `<i class="ti ti-microscope" style="font-size:12px;vertical-align:-1px"></i> ${agro}`;
+    closeModal();
+    showNotify('Dados da fazenda salvos!');
+  }
+
+  // ── NAVEGAÇÃO ──
+  function showSection(id,btn){
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('sec-'+id).classList.add('active');
+    btn.classList.add('active');
+  }
+  function showTab(id,btn){
+    document.querySelectorAll('.sub-section').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active-tab'));
+    document.getElementById('tab-'+id).classList.add('active');
+    btn.classList.add('active-tab');
+  }
+
+  // ── CULTIVAR EXPERIMENTAL ──
+  function toggleExperimental(){
+    const on = document.getElementById('toggle-exp').checked;
+    document.getElementById('exp-field').classList.toggle('show', on);
+    document.getElementById('cultivar-std-row').style.display = on ? 'none' : '';
+  }
+
+  function toggleSafra(btn){ btn.classList.toggle('inactive'); }
+  function saveTalhao(){ showNotify('Talhão salvo com sucesso!'); }
+
+  // ── PRODUÇÃO ──
+  function calcProduction(){
+    const area = parseFloat(document.getElementById('col-area').value)||0;
+    const prod = parseFloat(document.getElementById('col-producao').value)||0;
+    if(area>0 && prod>0){
+      document.getElementById('col-prodha').value = (prod/area).toFixed(1)+' sc/ha';
+      document.getElementById('col-kgha').value = ((prod*60)/area).toFixed(0)+' kg/ha';
+    } else {
+      document.getElementById('col-prodha').value='';
+      document.getElementById('col-kgha').value='';
+    }
+  }
+
+  // ── UMIDADE ──
+  function calcUmidade(){
+    const vals=[document.getElementById('umi-1').value,document.getElementById('umi-2').value,document.getElementById('umi-3').value]
+      .map(v=>parseFloat(v)).filter(v=>!isNaN(v));
+    if(!vals.length){ document.getElementById('umi-media').textContent='—'; return; }
+    const avg = vals.reduce((a,b)=>a+b,0)/vals.length;
+    document.getElementById('umi-media').textContent = avg.toFixed(1)+'%';
+    const pct = Math.min((avg/30)*100,100);
+    const fill = document.getElementById('umi-fill');
+    fill.style.width = pct+'%';
+    fill.style.background = avg<=13?'var(--green-mid)':avg<=15.5?'var(--amber-border)':'var(--red-border)';
+    const st = document.getElementById('umi-status');
+    if(avg<=13) st.innerHTML='<span style="color:var(--green-dark)">✓ Dentro do padrão comercial (≤13,0%)</span>';
+    else if(avg<=15.5) st.innerHTML='<span style="color:var(--amber-dark)">⚠ Umidade elevada — verificar necessidade de secagem</span>';
+    else st.innerHTML='<span style="color:var(--red-dark)">✗ Umidade acima do limite — secagem obrigatória antes do armazenamento</span>';
+  }
+
+  // ── DIÁRIO ──
+  function saveDiario(){
+    const tipo = document.getElementById('diario-tipo').value;
+    const prod = document.getElementById('diario-produto').value.trim();
+    const data = document.getElementById('diario-data').value;
+    const talhao = document.getElementById('diario-talhao').value;
+    const volume = document.getElementById('diario-volume').value;
+    const estadio = document.getElementById('diario-estadio').value;
+    const clima = document.getElementById('diario-clima').value;
+    const vento = document.getElementById('diario-vento').value;
+    if(!tipo||!prod){ showNotify('Preencha o tipo e o produto!'); return; }
+    const colors = {
+      herbicida:['var(--amber-light)','var(--amber-dark)'],
+      fungicida:['var(--blue-light)','var(--blue-dark)'],
+      inseticida:['var(--red-light)','var(--red-dark)'],
+      fertilizante:['var(--green-light)','var(--green-dark)'],
+      regulador:['var(--purple-light)','var(--purple-dark)'],
+      inoculante:['#E1F5EE','#0F6E56']
+    };
+    const c = colors[tipo]||['var(--bg-secondary)','var(--text-secondary)'];
+    const label = tipo.charAt(0).toUpperCase()+tipo.slice(1);
+    const meta = [talhao,estadio,volume?volume+' L/ha calda':'',clima,vento?vento+' km/h':''].filter(Boolean).join(' · ');
+    const list = document.getElementById('log-list');
+    const item = document.createElement('div');
+    item.className='log-item';
+    const dt = data ? new Date(data+'T00:00:00').toLocaleDateString('pt-BR') : '—';
+    item.innerHTML=`<div class="log-item-left"><span class="log-item-type" style="background:${c[0]};color:${c[1]}">${label}</span><div class="log-item-desc">${prod}</div><div class="log-item-meta">${meta||'—'}</div></div><div class="log-item-date">${dt}</div>`;
+    list.prepend(item);
+    const cnt = list.querySelectorAll('.log-item').length;
+    document.getElementById('log-count').textContent = cnt+' entr'+(cnt===1?'ada':'adas');
+    clearDiario();
+    showNotify('Entrada adicionada ao diário!');
+  }
+  function clearDiario(){
+    ['diario-talhao','diario-data','diario-tipo','diario-produto','diario-volume','diario-estadio','diario-clima','diario-vento','diario-obs']
+      .forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  }
+
+  // ── COLHEITA ──
+  function saveColheita(){
+    const talhao = document.getElementById('col-talhao').value||'Talhão não selecionado';
+    const area = document.getElementById('col-area').value;
+    const prod = document.getElementById('col-producao').value;
+    const prodha = document.getElementById('col-prodha').value;
+    const kgha = document.getElementById('col-kgha').value;
+    const data = document.getElementById('col-data').value;
+    const umiMedia = document.getElementById('umi-media').textContent;
+    if(!area||!prod){ showNotify('Preencha área e produção!'); return; }
+    const list = document.getElementById('col-list');
+    const item = document.createElement('div');
+    item.className='log-item';
+    const dt = data ? new Date(data+'T00:00:00').toLocaleDateString('pt-BR') : '—';
+    item.innerHTML=`<div class="log-item-left"><span class="log-item-type" style="background:var(--green-light);color:var(--green-dark)">${talhao}</span><div class="log-item-desc">${prodha} · ${area} ha · ${prod} sc · ${kgha}</div><div class="log-item-meta">Umidade: ${umiMedia} (média)</div></div><div class="log-item-date">${dt}</div>`;
+    list.prepend(item);
+    clearColheita();
+    showNotify('Colheita registrada com sucesso!');
+  }
+  function clearColheita(){
+    ['col-talhao','col-data','col-area','col-producao','col-prodha','col-kgha','col-hora','umi-1','umi-2','umi-3']
+      .forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    document.getElementById('umi-media').textContent='—';
+    document.getElementById('umi-fill').style.width='0%';
+    document.getElementById('umi-status').innerHTML='';
+  }
+
+  // ── NOTIFICAÇÃO ──
+  let notifyTimer;
+  function showNotify(msg){
+    clearTimeout(notifyTimer);
+    document.getElementById('notify-msg').textContent=msg;
+    const el=document.getElementById('notify');
+    el.classList.add('show');
+    notifyTimer=setTimeout(()=>el.classList.remove('show'),2800);
+  }
+</script>
+</body>
+</html>
